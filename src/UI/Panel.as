@@ -1,11 +1,11 @@
-package UI
+﻿package UI
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import data.GameInit;
+	import data.GameInit; 
 
 	public class Panel extends Sprite
 	{
