@@ -146,7 +146,6 @@ package scene
 				}
 			}
 			
-			
 			//玩家使用技能攻击怪物
 			if (PlayerInit.p_skillArr.length>0&&Math.random()>0){
 				//如果释放技能，取得一个随机技能

@@ -4,13 +4,14 @@ package UI
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	import data.ColorInit;
 
 	public class MyText extends Sprite
 	{
 		private var text:TextField;
 		private var m_width:int;
 		private var m_height:int;
-		public function MyText(txt:String = "",size:int = 20,color:int = 0x000000,algin:String = "left",width:int=100)
+		public function MyText(txt:String = "",size:int = 20,color:int = ColorInit.textColor,algin:String = "left",width:int=100)
 		{
 			var my_fmt:TextFormat = new TextFormat();//常用样式
 			my_fmt.size = size;

@@ -13,7 +13,6 @@ package scene
 	import data.GameInit;
 	import data.Map;
 	import data.PlayerInit;
-	import data.Reward;
 	
 	import dialogs.DialogObject;
 	

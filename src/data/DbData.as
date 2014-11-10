@@ -21,13 +21,10 @@ package data
 		}
 		//初始化
 		public function init():void{
-			loaddata("equip");
-			loaddata("user");
-			loaddata("bag");
-			loaddata("mountain");
-			loaddata("monster");
-			loaddata("skill");
-			loaddata("userskill");
+			for(var i:int = 0;i<GameInit.dataArr.length;i++){
+				if (GameInit.dataArr[i]!="sel")
+				loaddata(GameInit.dataArr[i]);
+			}
 		}
 		
 		public function loaddata(sstr:String,istr:String = "",sta:String = "load",selstr:String = ""):void{
@@ -90,7 +87,7 @@ package data
 					tstr = "insert into "+str + " (id,num) values ("+edata.id+","+edata.num+");";
 					break;
 				case "userskill":
-					tstr = "insert into "+str + " (id,level,exp) values ("+edata.id+","+edata.level+","+edata.exp+");";
+					tstr = "insert into "+str + " (id,level,exp,useing) values ("+edata.id+","+edata.level+","+edata.exp+","+edata.useing+");";
 					break;
 			}
 			return tstr;

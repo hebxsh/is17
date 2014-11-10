@@ -77,10 +77,29 @@ package dialogs
 					dropSki.addEventListener(MouseEvent.CLICK,remSkiHandler);
 					this.addChild(dropSki);
 				}
-			}else {
+			}else if(int(tdata.id)<50000){
+				switch(tdata.type){
+					case 1:
+						tstr += "类型： 辅助书籍\n\n";
+						tstr += tdata.shuoming;
+						break;
+					case 2:
+						tstr += "类型：功法\n\n";
+						tstr += tdata.shuoming;
+						break;
+
+				}
 				
+				if (ts!==1){
+//					var dropSki:MyButton = new MyButton("卸下",0xccccff);
+//					dropSki.x = (this.width - dropSki.width)>>1;
+//					dropSki.y = int(this.height*.85);
+//					dropSki.name = tdata.id+"";
+//					dropSki.addEventListener(MouseEvent.CLICK,remSkiHandler);
+//					this.addChild(dropSki);
+				}
 			}
-			var tf:MyText = new MyText(tstr);
+			var tf:MyText = new MyText(tstr,20,0x000000,"left",360);
 			tf.x = 50;
 			tf.y = 50;
 			this.addChild(tf);

@@ -12,6 +12,7 @@ package dialogs
 		private var player:MyButton;
 		private var bag:MyButton;
 		private var custom:MyButton;
+		private var xiulian:MyButton;
 		public function BottomUI()
 		{
 			init();
@@ -36,6 +37,12 @@ package dialogs
 			custom.x = bag.x+bag.width+5;
 			custom.addEventListener(MouseEvent.CLICK,ccHandler);
 			this.addChild(custom);
+			
+			if (!xiulian)
+				xiulian = new MyButton("修炼");
+			xiulian.x = custom.x+custom.width+5;
+			xiulian.addEventListener(MouseEvent.CLICK,xlHandler);
+			this.addChild(xiulian);
 		}
 		private function pcHandler(e:MouseEvent):void{
 			alone.playerdialog.theOpen();
@@ -48,6 +55,10 @@ package dialogs
 		private function ccHandler(e:MouseEvent):void{
 			alone.customdialog.theOpen();
 			alone.customdialog.Refresh();			
+		}
+		private function xlHandler(e:MouseEvent):void{
+			alone.xiuliandialog.theOpen();
+			alone.xiuliandialog.Refresh();
 		}
 	}
 }

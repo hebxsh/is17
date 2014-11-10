@@ -9,5 +9,7 @@ package data
 		//上下条颜色
 		public static const uiUpColor:int = 0Xccff77;
 		public static const uiDownColor:int = 0Xccff77;
+		//文字默认颜色
+		public static const textColor:int = 0X000000;
 	}
 }

@@ -19,6 +19,7 @@ package
 	import dialogs.SkillDialog;
 	import dialogs.UpUI;
 	import dialogs.UserLogin;
+	import dialogs.XiulianDialog;
 	
 	import event.CommEvent;
 	
@@ -37,6 +38,7 @@ package
 		public static var customdialog:CustomDialog;
 		public static var mazedialog:MazeDialog;
 		public static var fightlayer:FightLayer;
+		public static var xiuliandialog:XiulianDialog;
 		public static var alertSpr:Sprite;
 		public static var topSpr:Sprite;
 		
@@ -53,7 +55,8 @@ package
 			//延时第二帧刷新场景大小，pc调试用
 			//setTimeout(login,1);
 			setTimeout(init,1);
-			//init();	
+			//init();
+			//关闭窗口
 			win = stage.nativeWindow;
 			win.addEventListener(Event.CLOSE,onClose);
 		}
@@ -94,11 +97,14 @@ package
 			if (!bagdialog)
 				bagdialog = new BagDialog;
 			this.addChild(bagdialog);
-			//背包面板
+			//技能面板
 			if (!skilldialog)
 				skilldialog = new SkillDialog;
-			this.addChild(skilldialog);
-			
+			this.addChild(skilldialog);	
+			//修炼面板
+			if (!xiuliandialog)
+				xiuliandialog = new XiulianDialog;
+			this.addChild(xiuliandialog);	
 			//关卡面板
 			if (!customdialog)
 				customdialog = new CustomDialog;
