@@ -24,7 +24,7 @@ package UI
 			//text.border = true;
 			text.defaultTextFormat = my_fmt;
 			switch(algin){
-				case "left":					
+				case "left":
 					text.autoSize = TextFieldAutoSize.LEFT;
 					break;
 				case "center":					
@@ -49,6 +49,9 @@ package UI
 		}
 		public function setText(txt:String):void{
 			text.htmlText = txt;
+		}
+		public function setAlgin(txt:String):void{
+			text.autoSize = txt;
 		}
 	}
 }

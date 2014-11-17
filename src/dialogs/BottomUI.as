@@ -58,7 +58,7 @@ package dialogs
 		}
 		private function xlHandler(e:MouseEvent):void{
 			alone.xiuliandialog.theOpen();
-			alone.xiuliandialog.Refresh();
+			//alone.xiuliandialog.Refresh();
 		}
 	}
 }

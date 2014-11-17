@@ -65,6 +65,7 @@ package data
 					tstr = "UPDATE "+ str + " SET "+edata.type+"='"+edata.show+"'" + " WHERE " + edata.typeName+"='"+edata.nameShow+"'";
 					break;
 			}
+			trace (tstr);
 			return tstr;
 		}
 		//插入数据

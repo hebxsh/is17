@@ -33,5 +33,9 @@ package data
 		public static function paixu(arr:Array,str:String):void{
 			
 		}
+		//获取等级经验
+		public static function levelExp(lev:int):int{
+			return (lev+1)*(lev+1)*(lev+1)*5+(lev+1)*(lev+1)*10+(lev+1)*10;
+		}
 	}
 }
