@@ -53,12 +53,12 @@ package
 			var getdata:DbData = new DbData();
 			getdata.init();
 			//延时第二帧刷新场景大小，pc调试用
-			//setTimeout(login,1);
-			setTimeout(init,1);
+			setTimeout(login,1);
+			//setTimeout(init,1);
 			//init();
 			//关闭窗口
 			win = stage.nativeWindow;
-			win.addEventListener(Event.CLOSE,onClose);
+			//win.addEventListener(Event.CLOSE,onClose);
 		}
 		private function onClose(e:Event):void{
 			playerdialog.saveData();
