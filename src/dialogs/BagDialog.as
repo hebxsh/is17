@@ -78,11 +78,11 @@ package dialogs
 			}
 			
 			var tmStr:String = "";
+			var xx:Object = DataPool.getArr("bag");
 			for (var i:int = 0;i<DataPool.getArr("bag").length;i++){
 				var temid:int = DataPool.getArr("bag")[i].id;
 				if(temid<20000)tmStr = "equip";
 				else if(temid>40000&&temid<50000)tmStr = "book";
-				trace (tmStr,temid,DataPool.getSel(tmStr,temid));
 				if (DataPool.getSel(tmStr,temid)){
 					if (m_es == "bag"){						
 						var bagitem:BagItem = new BagItem(tmStr,temid,i);

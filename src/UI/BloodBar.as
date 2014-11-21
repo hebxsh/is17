@@ -42,7 +42,7 @@ package UI
 			m_upSpr.graphics.clear();
 			m_upSpr.graphics.beginFill(m_color);
 			var th:int = now/m_maxNum*m_width;
-			m_numtxt.setText(now+"/"+m_maxNum);
+			if(m_numtxt)m_numtxt.setText(now+"/"+m_maxNum);
 			if(th<0)th=0;
 			m_upSpr.graphics.drawRect(0,0,th,m_height);
 		}

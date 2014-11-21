@@ -7,6 +7,7 @@ package
 	import flash.events.Event;
 	import flash.utils.setTimeout;
 	
+	import data.DataPool;
 	import data.DbData;
 	import data.GameInit;
 	import data.PlayerInit;
@@ -14,6 +15,7 @@ package
 	import dialogs.BagDialog;
 	import dialogs.BottomUI;
 	import dialogs.CustomDialog;
+	import dialogs.LoadData;
 	import dialogs.MazeDialog;
 	import dialogs.PlayerDialog;
 	import dialogs.SkillDialog;
@@ -31,6 +33,8 @@ package
 	{	
 		public static var upui:UpUI;
 		private var bottomui:BottomUI;
+		public static var userlogin:UserLogin;
+		public static var loaddata:LoadData;
 		public static var maplayer:MapLayer;
 		public static var playerdialog:PlayerDialog;
 		public static var bagdialog:BagDialog;
@@ -50,11 +54,12 @@ package
 			// 支持 autoOrient
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_BORDER;
-			var getdata:DbData = new DbData();
-			getdata.init();
-			//延时第二帧刷新场景大小，pc调试用
-			setTimeout(login,1);
+			//读取本地sqlite数据
+			//var getdata:DbData = new DbData();
+			//getdata.init();
 			//setTimeout(init,1);
+			//延时第二帧刷新场景大小，pc调试用
+			setTimeout(login,1);			
 			//init();
 			//关闭窗口
 			win = stage.nativeWindow;
@@ -63,14 +68,22 @@ package
 		private function onClose(e:Event):void{
 			playerdialog.saveData();
 		}
+		//登录
 		private function login():void{
 			GameInit.m_stage = stage;
-			var login:UserLogin = new UserLogin();
-			login.addEventListener(CommEvent.LOGIN,init);
-			this.addChild(login);
+			if(!userlogin)
+				userlogin = new UserLogin();
+			userlogin.addEventListener(CommEvent.LOGIN,loaddataHandler);
+			this.addChild(userlogin);
+		}
+		//加载数据
+		private function loaddataHandler(e:CommEvent = null):void{			
+			loaddata = new LoadData();
+			loaddata.addEventListener(CommEvent.LOADCOMPLETE,init);
+			this.addChild(loaddata);
 		}
 		private function init(e:CommEvent = null):void{	
-			GameInit.m_stage = stage;
+			//GameInit.m_stage = stage;
 			PlayerInit.init();
 			//背景场景地图界面
 			if (!maplayer)

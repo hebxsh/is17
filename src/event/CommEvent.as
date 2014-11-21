@@ -9,6 +9,7 @@ package event
 	{
 		public static const GAMEOVER:String = "gameover";
 		public static const LOGIN:String = "login";
+		public static const LOADCOMPLETE:String = "loadcomplete";
 		public var data:Array = new Array;
 		public function CommEvent(type:String) 
 		{

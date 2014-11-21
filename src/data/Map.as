@@ -13,8 +13,9 @@ package data
 		}
 		public function getmap(level:int):Array{
 			mapArr = new Array();
-			m_hang = DataPool.getArr("mountain")[level].hang;
-			m_lie = DataPool.getArr("mountain")[level].lie;
+			///{需修改}
+			m_hang = 3;
+			m_lie = 3;
 			//var point:Point = random(hang,lie);
 			
 			for (var i:int = 0;i<m_hang;i++){

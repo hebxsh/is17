@@ -52,8 +52,8 @@ package data
 			for (var i:int = 0;i<p_xsArr.length;i++){
 				p_xsArr[i][3] = int(DataPool.getArr("user")[0][p_xsArr[i][0]]);
 			}
-			
-			maxhp = int(DataPool.getArr("user")[0].hp);		
+			var xx:Object = DataPool.getArr("user")[0];
+			maxhp = int(DataPool.getArr("user")[0].hp);
 			name = DataPool.getArr("user")[0].name;
 			hp = int(DataPool.getArr("user")[0].hp);
 			lingli = int(DataPool.getArr("user")[0].lingli);

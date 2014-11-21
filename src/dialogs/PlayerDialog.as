@@ -104,7 +104,7 @@ package dialogs
 			var panelArr2:Array = new Array;
 			var panelArr3:Array = new Array;
 			
-			for (var i:int = 0;i<PlayerInit.p_xsArr.length;i++){			
+			for (var i:int = 0;i<PlayerInit.p_xsArr.length;i++){
 				for(var property:String in DataPool.getArr("user")[0]){				
 					if (property == PlayerInit.p_xsArr[i][0]){
 						if(PlayerInit.p_xsArr[i][2]=="1"){
@@ -448,7 +448,7 @@ package dialogs
 			for (var i:int = 0;i<len;i++){
 				if(arr[i].id == id){
 					arr[i].useing = tnum;
-					saveSkill("useing",tnum.toString(),"id",id.toString());
+					//saveSkill("useing",tnum.toString(),"id",id.toString());
 				}
 			}
 		}

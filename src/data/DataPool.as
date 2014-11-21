@@ -9,10 +9,21 @@ package data
 			
 		}
 		public static function getSel(str:String,tid:int):Object{
-			for (var i:int = 0;i<getArr(str).length;i++){
-				if(getArr(str)[i].id == tid){
-					return getArr(str)[i];
-					break;
+			var temarr:Object = getArr(str);
+			if (temarr.length==0)return 0;
+			if(temarr[0].length>1){
+				for (var i:int = 0;i<temarr[0].length;i++){
+					if(temarr[0][i].id == tid){
+						return temarr[0][i];
+						break;
+					}
+				}
+			}else{
+				for (var j:int = 0;j<temarr.length;j++){
+					if(temarr[j].id == tid){
+						return temarr[j];
+						break;
+					}
 				}
 			}
 			return 0;
@@ -34,6 +45,14 @@ package data
 				for (var i:int = 0;i<GameInit.dataArr.length;i++)dataArr.push(new Array());
 			}
 			return dataArr[GameInit.getlid(str)];
+		}
+		//写入数据到程序
+		public static function setData(str:String,obj:Object):void{
+			if (!dataArr){
+				dataArr = new Array();
+				for (var i:int = 0;i<GameInit.dataArr.length;i++)dataArr.push(new Object());
+			}
+			dataArr[GameInit.getlid(str)] = obj;
 		}
 	}
 }

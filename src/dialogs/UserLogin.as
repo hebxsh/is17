@@ -15,8 +15,8 @@ package dialogs
 	import UI.MyButton;
 	import UI.MyText;
 	
-	import data.GameInit;
 	import data.DataPool;
+	import data.GameInit;
 	
 	import event.CommEvent;
 
@@ -26,10 +26,7 @@ package dialogs
 		private var uinput:TextField;
 		private var pinput:TextField;
 		private var socket:Socket;
-		/**weburl*/
-		//private var loginurl:String = "http://tayee.sinaapp.com/login.php";
-		/**testurl*/
-		private var loginurl:String = "http://127.0.0.1/login.php";
+
 		public function UserLogin()
 		{
 			init();
@@ -94,7 +91,7 @@ package dialogs
 		private function loginHandler(e:MouseEvent):void{	
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, loaderComplete);
-			var res:URLRequest = new URLRequest(loginurl);
+			var res:URLRequest = new URLRequest(GameInit.LOGINURL);
 			res.method = URLRequestMethod.POST;
 			var ver:URLVariables = new URLVariables();
 			ver.username = uinput.text;
@@ -104,72 +101,10 @@ package dialogs
 		}
 		private function loaderComplete(e:Event):void{
 			var userdata:Object = JSON.parse(e.target.data);
-
-			var obj:Object = new Object;
-
-			DataPool.getArr("user").push(obj);
+			DataPool.getArr("user").push(userdata[0]);
 			this.visible = false;
 			var evt:CommEvent = new CommEvent(CommEvent.LOGIN);
 			dispatchEvent(evt);
 		}
-//			socket = new Socket;
-//			socket.addEventListener(Event.CONNECT,onConnect);
-//			socket.connect("192.168.0.38",8101);
-//			TcpSocket.getMe().registerBackFun(10003,loginOK);
-//			//TcpSocket.getMe().registerBackFun(10010,bagOK);
-//			TcpSocket.getMe().connect("192.168.0.38",8101);
-//		}
-//		private function loginHandler(e:MouseEvent):void{	
-//			var byte:ByteArray = new ByteArray;
-//			byte.writeUnsignedInt(getRealLen(uinput.text+pinput.text));
-//			byte.writeInt(10001);
-//			byte.writeUTF(uinput.text);
-//			byte.writeUTF(pinput.text);
-//			TcpSocket.getMe().sendData(10001,byte,loginOK);
-//			
-//			//TcpSocket.getMe().registerBackFun(10004,loginSuc);
-//		}
-//		private function registHandler(e:MouseEvent):void{
-//			
-//		}
-//		private function loginOK(e:ByteArray):void{
-//			var head:int = e.readShort();
-//			var msg:String = e.readUTF();
-//			var arr:Array = msg.split(",");
-//			
-//			var obj:Object = new Object;
-//			for (var i:int =0;i<arr.length;i++){
-//				var ta:Array = arr[i].split(":");				
-//				obj[ta[0]] = ta[1];				
-//			}
-//			DataPool.getArr("user").push(obj);
-//			this.visible = false;
-//			var evt:CommEvent = new CommEvent(CommEvent.LOGIN);
-//			dispatchEvent(evt);
-//		}
-//		private function bagOK(e:ByteArray):void{
-//			var head:int = e.readShort();
-//			var msg:Object = e.readObject();
-//			
-//			var arr:Array = msg.split(",");
-//			
-//			var obj:Object = new Object;
-//			for (var i:int =0;i<arr.length;i++){
-//				var ta:Array = arr[i].split(":");				
-//				obj[ta[0]] = ta[1];				
-//			}
-//			DataPool.getArr("bag").push(obj);
-//			this.visible = false;
-//			var evt:CommEvent = new CommEvent(CommEvent.LOGIN);
-//			dispatchEvent(evt);
-//		}
-//		public function getRealLen(msg:String):int
-//		{
-//			var byte:ByteArray = new ByteArray;
-//			byte.writeUTF(msg);
-//			byte.position = 0;
-//			return (byte.length+5);
-//		}
-
 	}
 }

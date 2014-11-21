@@ -160,18 +160,18 @@ package scene
 					liveMonArr.splice(livenum,1);				
 					//判断技能属性
 					switch(skill.type){
-						case 1:
+						case "1":
 							killNum = getGongSkillHert(skill,monster);
 							if (killNum<0)killNum=0;
 							showStr +="你使用"+"<font color='"+GameInit.getHtmlColor(int(skill.level))+"'>"+skill.name+"</font>对<font color='#003fe0'>"+monster.name+"</font>造成了<font color='#ff0000'>"+killNum+"</font>伤害\n";
 							killMonster(monster);
 							break;
-						case 2:
+						case "2":
 							killNum = int(PlayerInit.gongji*skill.percentage/100);
 							if (PlayerInit.hp + killNum>PlayerInit.maxhp)PlayerInit.hp = PlayerInit.maxhp;
 							showStr +="你使用"+"<font color='"+GameInit.getHtmlColor(int(skill.level))+"'>"+skill.name+"</font><font color='#003fe0'></font>获得了<font color='#ff0000'>"+killNum+"</font>治疗\n";
 							break;
-						case 3:
+						case "3":
 							for (var k:int=0;k<GameInit.wxsxArr.length;k++){
 								killNum = getFaSkillHert(skill,monster,GameInit.wxsxArr[k]);
 								if (killNum<0)killNum=0;
@@ -186,7 +186,7 @@ package scene
 								debMonster(monster,GameInit.gfsxArr[j],delNum);
 							}
 							break;
-						case 4:
+						case "4":
 							for (var l:int=0;l<GameInit.wxsxArr.length;l++){
 								killNum = getFaSkillHert(skill,monster,GameInit.wxsxArr[l]);
 								if (killNum<0)killNum=0;
@@ -195,7 +195,7 @@ package scene
 								killMonster(monster);
 							}
 							break;
-						case 5:
+						case "5":
 							break;
 					}
 					//如果是dot技能	
@@ -214,7 +214,7 @@ package scene
 				if (killNum<0)killNum=0;
 				showStr +="你对<font color='#003fe0'>"+monster.name+"</font>造成了<font color='#ff0000'>"+killNum+"</font>伤害\n";
 				killMonster(monster);			
-			}			
+			}
 		}
 		//查询dot技能
 		private function selDot(monster:Monster,sid:int,huihe:int):Boolean{
@@ -234,18 +234,18 @@ package scene
 					temSkill.huihe--;
 					//判断技能属性
 					switch(temSkill.type){
-						case 1:							
+						case "1":							
 							killNum = getGongSkillHert(temSkill,monster);
 							if (killNum<0)killNum=0;
 							showStr ="<font color='#003fe0'>"+monster.name+"</font>受到了"+"<font color='"+GameInit.getHtmlColor(int(temSkill.level))+"'>"+temSkill.name+"</font><font color='#ff0000'>"+killNum+"</font>伤害"+temSkill.huihe+"\n";
 							killMonster(monster);
 							break;
-						case 2:
+						case "2":
 							killNum = int(PlayerInit.gongji*temSkill.percentage/100);
 							if (PlayerInit.hp + killNum>PlayerInit.maxhp)PlayerInit.hp = PlayerInit.maxhp;
 							showStr +="你使用"+"<font color='"+GameInit.getHtmlColor(int(temSkill.level))+"'>"+temSkill.name+"</font><font color='#003fe0'></font>获得了<font color='#ff0000'>"+killNum+"</font>治疗\n";
 							break;
-						case 3:
+						case "3":
 							for (var k:int=0;k<GameInit.wxsxArr.length;k++){
 								killNum = getFaSkillHert(temSkill,monster,GameInit.wxsxArr[k]);
 								if (killNum<0)killNum=0;
@@ -254,7 +254,7 @@ package scene
 								killMonster(monster);
 							}
 							break;
-						case 4:
+						case "4":
 							for (var l:int=0;l<GameInit.wxsxArr.length;l++){
 								killNum = getFaSkillHert(temSkill,monster,GameInit.wxsxArr[l]);
 								if (killNum<0)killNum=0;
@@ -263,7 +263,7 @@ package scene
 								killMonster(monster);
 							}
 							break;
-						case 5:
+						case "5":
 							break;
 					}
 					
