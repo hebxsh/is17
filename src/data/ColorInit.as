@@ -11,5 +11,10 @@ package data
 		public static const uiDownColor:int = 0Xccff77;
 		//文字默认颜色
 		public static const textColor:int = 0X000000;
+		//面板相关颜色
+		public static const dialogBgColor:int = 0Xcccc77;
+		//图标相关颜色
+		public static const iconBgColor:int = 0X777733;
+		public static const iconLineColor:int = 0Xcccc77;
 	}
 }

@@ -3,6 +3,7 @@ package UI
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
+	import data.ColorInit;
 	import data.GameInit;
 
 	public class Alert extends Sprite
@@ -19,7 +20,7 @@ package UI
 				bgSpr = new Sprite;
 				this.addChild(bgSpr);
 			}
-			bgSpr.graphics.beginFill(0Xcccc77);
+			bgSpr.graphics.beginFill(ColorInit.dialogBgColor);
 			bgSpr.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
 			var tit:MyText = new MyText(_tit,32,0xff0000);

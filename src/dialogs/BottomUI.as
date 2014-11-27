@@ -50,7 +50,7 @@ package dialogs
 		}
 		private function bcHandler(e:MouseEvent):void{
 			alone.bagdialog.setTitle();
-			//alone.bagdialog.Refresh();			
+			alone.bagdialog.Refresh();			
 		}
 		private function ccHandler(e:MouseEvent):void{
 			alone.customdialog.theOpen();

@@ -15,6 +15,7 @@ package dialogs
 	import UI.MyButton;
 	import UI.MyText;
 	
+	import data.ColorInit;
 	import data.DataPool;
 	import data.GameInit;
 	
@@ -34,7 +35,7 @@ package dialogs
 		private function init():void{
 			this.visible = true;
 			theTitle("登 陆");
-			this.graphics.beginFill(0Xcccc77);
+			this.graphics.beginFill(ColorInit.dialogBgColor);
 			this.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
 			var spr:Sprite = new Sprite;
@@ -73,7 +74,7 @@ package dialogs
 			spr.addChild(pinput);
 			
 			spr.graphics.lineStyle(1,0x000000);
-			spr.graphics.beginFill(0Xcccc77);
+			spr.graphics.beginFill(ColorInit.dialogBgColor);
 			spr.graphics.drawRect(utxt.width + utxt.x ,0,200,uinput.height);
 			spr.graphics.drawRect(utxt.width + utxt.x ,60,200,uinput.height);
 			

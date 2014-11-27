@@ -7,7 +7,11 @@ package data
 	import flash.events.SQLEvent;
 	import flash.filesystem.File;
 
-
+	/**
+	 * 读取本地数据库类，
+	 * 
+	 * 弃用。
+	 * */
 	public class DbData
 	{
 		private var sqlConnection:SQLConnection;
@@ -65,7 +69,6 @@ package data
 					tstr = "UPDATE "+ str + " SET "+edata.type+"='"+edata.show+"'" + " WHERE " + edata.typeName+"='"+edata.nameShow+"'";
 					break;
 			}
-			trace (tstr);
 			return tstr;
 		}
 		//插入数据

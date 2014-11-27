@@ -9,11 +9,16 @@ package dialogs
 	import UI.MyButton;
 	import UI.MyText;
 	import UI.TabBar;
+	import UI.ToolTip;
 	
+	import data.ChangeData;
+	import data.ColorInit;
 	import data.DataInit;
 	import data.DataPool;
 	import data.GameInit;
-	import data.SqlDb;
+	import data.RefreshData;
+	
+	import event.CommEvent;
 
 	public class XiulianDialog extends DialogObject
 	{
@@ -27,10 +32,12 @@ package dialogs
 		private var xlBar:BloodBar ;
 		private var ghBtn:MyButton ;
 		private var gfSkill:Object;
+		private var xlIndex:int = 0;
+		private var tabId:int = 0;
 		public function XiulianDialog()
 		{
 			theTitle("修 炼");
-			this.graphics.beginFill(0Xcccc77);
+			this.graphics.beginFill(ColorInit.dialogBgColor);
 			this.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
 			m_tab = new TabBar(["功 法","技 能","阅 读"]);
@@ -125,7 +132,18 @@ package dialogs
 		
 		//更换相关技能
 		private function ghHandler(e:MouseEvent):void{
-			trace ("更换");
+			alone.skilldialog.setTitle("xl");
+		}
+		/**
+		 * 更换修炼技能
+		 * */
+		public function addSki(id:int):void{
+			this.timer.stop();
+			DataPool.getArr("userskill")[xlIndex].xiulian = 0;
+			DataPool.getSel("userskill",id).xiulian = m_tab.getIndex()+2;
+			RefreshData.updateData("userskill","xiulian","0","id",gfSkill.id.toString());
+			RefreshData.updateData("userskill","xiulian","2","id",id.toString());
+			refreshShow(m_tab.getIndex());
 		}
 		//点击修炼按钮
 		private function xlHandler(e:MouseEvent):void{
@@ -151,6 +169,7 @@ package dialogs
 							bookskill.exp = DataPool.getArr("userskill")[i].exp;
 						}
 					}
+					xlIndex = i;
 				}
 			}
 			return bookskill;
@@ -160,33 +179,28 @@ package dialogs
 			++gfSkill.exp;
 			if (gfSkill.exp<DataInit.levelExp(gfSkill.nowlevel)){
 				xlBar.ReNum(gfSkill.exp);
-			}else{
-				
+			}else{//升级
+				if (gfSkill.nowlevel+1==gfSkill.maxlevel){
+					timer.stop();
+				}else{
+					RefreshData.updateData("userskill","exp","0","id",gfSkill.id.toString());
+					RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel+1+"","id",gfSkill.id.toString());
+					refreshShow(m_tab.getIndex());
+				}
 			}			
 		}
 		//点击选项卡
 		private function tabHandler(e:MouseEvent):void{
-//			for (var i:int = 0;i<itemArr.length;i++){
-//				if(i==m_tab.getIndex()){
-//					itemArr[i].visible = true;
-//				}else{
-//					itemArr[i].visible = false;
-//				}
-//			}
-			saveSkill("exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
-			saveSkill("nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
+			RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
+			RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
 			
 			this.timer.stop();
 			refreshShow(m_tab.getIndex());
-		}
-		//保存技能
-		private function saveSkill(typestr:String,showstr:String,namestr:String,nameshowstr:String):void{
-			SqlDb.save("userskill",{type:typestr,show:showstr,typeName:namestr,nameShow:nameshowstr});	
-		}
+		}		
 		//关闭
 		public function closeHandler(e:MouseEvent = null):void{
-			saveSkill("exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
-			saveSkill("nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
+			RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
+			RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
 			this.timer.stop();
 			this.theDest();
 		}

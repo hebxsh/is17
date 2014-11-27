@@ -5,6 +5,7 @@ package dialogs
 	import UI.MyButton;
 	import UI.Panel;
 	
+	import data.ColorInit;
 	import data.DataPool;
 	import data.GameInit;
 	
@@ -17,7 +18,7 @@ package dialogs
 			init();
 		}
 		private function init():void{			
-			this.graphics.beginFill(0Xcccc77);
+			this.graphics.beginFill(ColorInit.dialogBgColor);
 			this.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
 			skiSpr = new Panel(400,600);
@@ -32,7 +33,9 @@ package dialogs
 			this.addChild(closeBtn);
 			Refresh();
 		}
-		public function setTitle():void{
+		public static var useType:String;
+		public function setTitle(str:String):void{
+			useType = str;
 			theTitle("技 能");
 			theOpen();
 		}

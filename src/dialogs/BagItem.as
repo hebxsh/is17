@@ -8,6 +8,7 @@ package dialogs
 	import UI.MyButton;
 	
 	import data.DataPool;
+	import data.RefreshData;
 	import data.SqlDb;
 
 	public class BagItem extends Sprite
@@ -68,9 +69,9 @@ package dialogs
 		}
 		private function zbHandler(e:MouseEvent):void{
 			if (int(e.currentTarget.obj.id)<20000){
-				alone.playerdialog.addEqu(int(e.currentTarget.obj.id),int(e.currentTarget.obj.type)-1);
+				alone.playerdialog.addEqu(int(e.currentTarget.obj.id),int(e.currentTarget.obj.type)-1,int(e.currentTarget.mobj.mainid));
 			}else if(int(e.currentTarget.obj.id)<40000){
-				alone.playerdialog.addSki(int(e.currentTarget.obj.id),int(e.currentTarget.obj.type)-1);
+				RefreshData.inser("userskill",e.currentTarget.obj.id);
 			}else if(int(e.currentTarget.obj.id)<50000){
 				trace ("阅读书籍");
 				//alone.playerdialog.addSki(int(e.currentTarget.obj.id),int(e.currentTarget.obj.type)-1);
@@ -80,7 +81,7 @@ package dialogs
 			alone.bagdialog.closeHandler();
 		}
 		private function delet(typeid:int):void{
-			SqlDb.delet("bag",{mainid:typeid});	
+			RefreshData.delet("bag",typeid.toString());
 		}
 	}
 }

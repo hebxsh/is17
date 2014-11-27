@@ -7,6 +7,8 @@ package
 	import flash.events.Event;
 	import flash.utils.setTimeout;
 	
+	import UI.CodeImageIcon;
+	
 	import data.DataPool;
 	import data.DbData;
 	import data.GameInit;
@@ -110,14 +112,14 @@ package
 			if (!bagdialog)
 				bagdialog = new BagDialog;
 			this.addChild(bagdialog);
-			//技能面板
-			if (!skilldialog)
-				skilldialog = new SkillDialog;
-			this.addChild(skilldialog);	
 			//修炼面板
 			if (!xiuliandialog)
 				xiuliandialog = new XiulianDialog;
 			this.addChild(xiuliandialog);	
+			//技能面板
+			if (!skilldialog)
+				skilldialog = new SkillDialog;
+			this.addChild(skilldialog);				
 			//关卡面板
 			if (!customdialog)
 				customdialog = new CustomDialog;
@@ -133,6 +135,7 @@ package
 			//最顶端层，暂时放tooltip提示
 			topSpr = new Sprite();
 			this.addChild(topSpr);
+			
 		}
 		public function gameOver(e:CommEvent):void{
 			//this.removeChild(maplayer);

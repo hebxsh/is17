@@ -5,6 +5,7 @@ package dialogs
 	import UI.MyButton;
 	import UI.Panel;
 	
+	import data.ColorInit;
 	import data.DataPool;
 	import data.GameInit;
 	
@@ -21,7 +22,7 @@ package dialogs
 			init();
 		}
 		private function init():void{			
-			this.graphics.beginFill(0Xcccc77);
+			this.graphics.beginFill(ColorInit.dialogBgColor);
 			this.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
 			equSpr = new Panel(400,600);
@@ -78,7 +79,6 @@ package dialogs
 			}
 			
 			var tmStr:String = "";
-			var xx:Object = DataPool.getArr("bag");
 			for (var i:int = 0;i<DataPool.getArr("bag").length;i++){
 				var temid:int = DataPool.getArr("bag")[i].id;
 				if(temid<20000)tmStr = "equip";

@@ -11,13 +11,20 @@ package scene
 	import UI.Panel;
 	import UI.ToolTip;
 	
+	import data.ChangeData;
+	import data.ColorInit;
 	import data.DataInit;
+	import data.DataPool;
 	import data.GameInit;
 	import data.Monster;
 	import data.PlayerInit;
 	import data.Reward;
+	import data.SqlDb;
 	
 	import dialogs.DialogObject;
+	import dialogs.UserLogin;
+	
+	import event.CommEvent;
 
 	public class FightLayer extends DialogObject
 	{
@@ -56,7 +63,7 @@ package scene
 		private function init():void{
 			tooltip = new ToolTip();
 			theTitle("战斗信息");
-			this.graphics.beginFill(0Xcccc77);
+			this.graphics.beginFill(ColorInit.dialogBgColor);
 			this.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
 			if(!monSpr)monSpr = new Sprite();
@@ -117,8 +124,7 @@ package scene
 		//生成战斗记录
 		private function getActionList(item:*):void{
 			showStr = "";
-			if (item.p_type == 0){
-				
+			if (item.p_type == 0){				
 				if(!isOver){
 					userSkill();
 				}
@@ -317,12 +323,21 @@ package scene
 					//获取奖励  杀死所有怪物获取
 					isOver = true;
 					queBtn.visible = true;
-					var showReward:String = Reward.getitem(m_level);
-					showStr += showReward;					
+					Reward.getitem(m_level);
 					timer.removeEventListener(TimerEvent.TIMER,timerHandler);
-				}
+				}								
 			}
 		}
+		/**
+		 * 添加获得物品到战斗信息
+		 * */
+		public function showReward(showstr:String):void{
+			text = new MyText(showstr,20,0x000000,"left",360);
+			text.x = 10;			
+			m_panel.addContent(text);
+			m_panel.lastContents();
+		}
+
 		//debuff效果
 		private function debMonster(mon:Monster,str:String,num:int):void{
 			var tnum:int;

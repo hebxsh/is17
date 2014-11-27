@@ -2,6 +2,11 @@ package data
 {
 	public class SqlDb
 	{
+		/**
+		 * 读取本地数据库类，
+		 * 
+		 * 弃用。
+		 * */
 		public function SqlDb()
 		{
 		}

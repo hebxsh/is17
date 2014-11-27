@@ -5,6 +5,7 @@ package dialogs
 	
 	import UI.MyButton;
 	
+	import data.ColorInit;
 	import data.DataPool;
 	import data.GameInit;
 	import data.PlayerInit;
@@ -18,7 +19,7 @@ package dialogs
 		}
 		private function init():void{
 			theTitle("关 卡");
-			this.graphics.beginFill(0Xcccc77);
+			this.graphics.beginFill(ColorInit.dialogBgColor);
 			this.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
 			var closeBtn:MyButton = new MyButton("X",0xff0000);

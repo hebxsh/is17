@@ -8,7 +8,7 @@ package dialogs
 	import UI.MyButton;
 	
 	import data.DataPool;
-	import data.SqlDb;
+	import data.RefreshData;
 	
 	public class SkiItem extends Sprite
 	{
@@ -60,13 +60,18 @@ package dialogs
 			alone.skilldialog.Refresh();
 		}
 		private function zbHandler(e:MouseEvent):void{
-			alone.playerdialog.addSki(int(e.currentTarget.obj.id),int(e.currentTarget.obj.type)-1);	
+			if (SkillDialog.useType == "zb"){
+				alone.playerdialog.addSki(int(e.currentTarget.obj.id),int(e.currentTarget.obj.type)-1);	
+			}else if(SkillDialog.useType == "xl"){
+				alone.xiuliandialog.addSki(int(e.currentTarget.obj.id));	
+			}
 			/**添加移除技能不改变列表，只更新状态。*/			
 			//delet(int(e.currentTarget.mobj.mainid));
 			alone.skilldialog.closeHandler();
 		}
 		private function delet(typeid:int):void{
-			SqlDb.delet("userskill",{mainid:typeid});	
+			//SqlDb.delet("userskill",{mainid:typeid});
+			RefreshData.delet("userskill",typeid.toString());
 		}
 	}
 }

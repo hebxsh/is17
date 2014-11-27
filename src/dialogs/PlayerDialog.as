@@ -8,10 +8,13 @@ package dialogs
 	import UI.MyText;
 	import UI.TabBar;
 	
+	import data.ChangeData;
+	import data.ColorInit;
 	import data.DataPool;
 	import data.GameInit;
 	import data.PlayerInit;
-	import data.SqlDb;
+	import data.RefreshData;
+
 	/**
 	 * 
 	 * 人物面板
@@ -55,7 +58,7 @@ package dialogs
 		//初始化
 		private function init():void{	
 			theTitle("人 物");
-			this.graphics.beginFill(0Xcccc77);
+			this.graphics.beginFill(ColorInit.dialogBgColor);
 			this.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
 			m_tab = new TabBar(["属 性","装 备","技 能"]);
@@ -307,18 +310,18 @@ package dialogs
 			return tid;
 		}
 		//添加更换装备
-		public function addEqu(id:int,tpid:int = -1):void{
+		public function addEqu(id:int,tpid:int = -1,mainid:int = 0):void{
 			if (tpid==-1){
 				tpid = typeid;								
 			}else{
 				if (tpid==2&&temEquSpr[tpid].numChildren>0)tpid=3;
 				if (tpid==2&&temEquSpr[tpid].numChildren>0&&temEquSpr[tpid+1].numChildren>0)tpid=2+int(Math.random()*2);
 				removeEqu(tpid);
-			}
-			
+				RefreshData.puton("equip",gettypename(typeid),id.toString(),gettypename(typeid),mainid.toString());
+			}			
 			var tbx:EquipBox = new EquipBox(DataPool.getSel("equip",id));
 			temEquSpr[tpid].addChild(tbx);
-			Refresh();
+			Refresh();			
 		}
 		//移除装备
 		public function removeEqu(tpid:int = -1):void{
@@ -329,15 +332,16 @@ package dialogs
 				var tmid:int = temEquSpr[tpid].getChildAt(0).edata.id;
 				temEquSpr[tpid].removeChildAt(0);
 				var xx:Object = {id:tmid,num:1};
-				SqlDb.insert("bag",{id:tmid,num:1});	
-				//DataPool.getArr("bag").push(xx);			
+				//SqlDb.insert("bag",{id:tmid,num:1});	
+				//DataPool.getArr("bag").push(xx);	
+				RefreshData.unload("equip",gettypename(typeid),"0",gettypename(typeid),tmid.toString());
 			}
 			Refresh();
 		}
 		///////////////////////////////////////////////////////////////////////////////////////
-		//添加装备背景
 		
 		private var skillid:int = 0;
+		private var skillname:String = "";
 		private var skilltype:int = 0;
 		//添加技能栏
 		private function createAddBg(ts:Sprite,tArr:Array,x:int,y:int,name:String):void{
@@ -365,14 +369,16 @@ package dialogs
 		//点击+号按钮
 		private function addSkiHandler(e:MouseEvent):void{
 			//trace (e.currentTarget.name);
-			alone.skilldialog.setTitle();
+			alone.skilldialog.setTitle("zb");
 			var tname:String = e.currentTarget.name;
+			skillname = tname;
 			skillid = getSkillid(tname);
 			skilltype = getSkillType(tname);
 		}
-		//点击装备
+		//点击添加技能
 		private function setSkiHandler(e:MouseEvent):void{
 			var tname:String = e.currentTarget.name;
+			skillname = tname;
 			skillid = getSkillid(tname);
 			skilltype = getSkillType(tname);
 		}
@@ -395,24 +401,7 @@ package dialogs
 			}
 			return ttype;
 		}
-//		private function getSkillname(str:int):String{
-//			var tid:String = "";
-//			switch(str){
-//				case 0:
-//					tid = "skill1";
-//					break;
-//				case 1:
-//					tid = "skill2";
-//					break;
-//				case 2:
-//					tid = "skill3";
-//					break;
-//				case 3:
-//					tid = "skill4";
-//					break;
-//			}
-//			return tid;
-//		}
+
 		//添加更换技能
 		public function addSki(id:int,tpid:int = -1,tnum:int = 0):void{
 			if (tpid==-1){
@@ -431,6 +420,7 @@ package dialogs
 					tpid=int(Math.random()*4);
 					removeSki(tpid);
 				}
+				RefreshData.puton("userskill",skillname,id.toString(),skillname,id.toString());
 			}
 			//DataPool.getArr("userskill")[id].using = ++tnum;
 			refreshSkill(id,tnum+1);
@@ -464,11 +454,12 @@ package dialogs
 				var tmexp:int = skillArr[tnum][tpid].getChildAt(0).edata.exp;
 				skillArr[tnum][tpid].removeChildAt(0);
 				//refreshSkill(tmid,++tnum);
-				saveSkill("useing",tnum.toString(),"id",tmid.toString());
-				//var xx:Object = {id:tmid,num:1};
+				//saveSkill("useing",tnum.toString(),"id",tmid.toString());
+				//var xx:Object = {id:tmid,num:1}
 				/**添加移除技能，不改变技能列表，只更新技能状态。*/
 				//SqlDb.insert("userskill",{id:tmid,level:tmlevel,exp:tmexp});
-				//DataPool.getArr("bag").push(xx);			
+				//DataPool.getArr("bag").push(xx);	
+				RefreshData.unload("skill",skillname,"0",skillname,tmid.toString());
 			}
 			Refresh();
 		}
@@ -538,11 +529,9 @@ package dialogs
 		}
 		//保存玩家
 		private function save(typestr:String,showstr:String):void{
-			SqlDb.save("user",{type:typestr,show:showstr});	
-		}
-		//保存技能
-		private function saveSkill(typestr:String,showstr:String,namestr:String,nameshowstr:String):void{
-			SqlDb.save("userskill",{type:typestr,show:showstr,typeName:namestr,nameShow:nameshowstr});	
+			//SqlDb.save("user",{type:typestr,show:showstr});	
+			var geiaward:ChangeData = new ChangeData();
+			geiaward.refreshData("user","save",{type:typestr,show:showstr});
 		}
 	}
 }
