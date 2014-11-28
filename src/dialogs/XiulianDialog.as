@@ -104,6 +104,12 @@ package dialogs
 		//刷新
 		private function refreshShow(tab:int):void{
 			gfSkill = DataInit.getCopy(getBookSkill(tab+2));
+			if(!gfSkill){
+				xltxt.setText("无");			
+				xlBar.ReMax(0);
+				xlBar.ReNum(0);
+				return;
+			}
 			xltxt.setText(showTxt(tab)+"<font color='"+GameInit.getHtmlColor(gfSkill.level)+"'>"+gfSkill.name+"</font>");			
 			xlBar.ReMax(DataInit.levelExp(gfSkill.nowlevel));
 			xlBar.ReNum(gfSkill.exp);
@@ -191,6 +197,7 @@ package dialogs
 		}
 		//点击选项卡
 		private function tabHandler(e:MouseEvent):void{
+			if(!gfSkill)return;
 			RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
 			RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
 			
@@ -199,10 +206,12 @@ package dialogs
 		}		
 		//关闭
 		public function closeHandler(e:MouseEvent = null):void{
-			RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
-			RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
 			this.timer.stop();
 			this.theDest();
+			if(!gfSkill)return;
+			RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
+			RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
+			
 		}
 	}
 }

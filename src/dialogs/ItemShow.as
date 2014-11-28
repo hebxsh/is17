@@ -78,11 +78,11 @@ package dialogs
 				}
 			}else if(int(tdata.id)<50000){
 				switch(tdata.type){
-					case "1":
+					case "4":
 						tstr += "类型： 辅助书籍\n\n";
 						tstr += tdata.shuoming;
 						break;
-					case "2":
+					case "5":
 						tstr += "类型：功法\n\n";
 						tstr += tdata.shuoming;
 						break;

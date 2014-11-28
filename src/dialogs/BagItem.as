@@ -42,7 +42,7 @@ package dialogs
 			}
 			var showTxt:String = "装备";
 			if (int(temObj.id)>40000&&int(temObj.id)<50000){
-				if(temObj.type == "1"){
+				if(temObj.type == "4"){
 					showTxt = "阅读";
 				}else{
 					showTxt = "修炼";
