@@ -147,8 +147,9 @@ package dialogs
 			this.timer.stop();
 			DataPool.getArr("userskill")[xlIndex].xiulian = 0;
 			DataPool.getSel("userskill",id).xiulian = m_tab.getIndex()+2;
+			if(gfSkill)
 			RefreshData.updateData("userskill","xiulian","0","id",gfSkill.id.toString());
-			RefreshData.updateData("userskill","xiulian","2","id",id.toString());
+			RefreshData.updateData("userskill","xiulian",(m_tab.getIndex()+2)+"","id",id.toString());
 			refreshShow(m_tab.getIndex());
 		}
 		//点击修炼按钮
@@ -197,12 +198,12 @@ package dialogs
 		}
 		//点击选项卡
 		private function tabHandler(e:MouseEvent):void{
-			if(!gfSkill)return;
-			RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
-			RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
-			
 			this.timer.stop();
 			refreshShow(m_tab.getIndex());
+			
+			if(!gfSkill)return;
+			RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
+			RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());			
 		}		
 		//关闭
 		public function closeHandler(e:MouseEvent = null):void{

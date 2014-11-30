@@ -12,6 +12,7 @@ package
 	import data.DataPool;
 	import data.DbData;
 	import data.GameInit;
+	import dialogs.LoadData;
 	import data.PlayerInit;
 	
 	import dialogs.BagDialog;

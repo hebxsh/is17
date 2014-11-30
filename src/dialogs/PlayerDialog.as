@@ -420,7 +420,7 @@ package dialogs
 					tpid=int(Math.random()*4);
 					removeSki(tpid);
 				}
-				RefreshData.puton("userskill",skillname,id.toString(),skillname,id.toString());
+				RefreshData.puton("skill",skillname,id.toString(),skillname,id.toString());
 			}
 			//DataPool.getArr("userskill")[id].using = ++tnum;
 			refreshSkill(id,tnum+1);
