@@ -10,7 +10,7 @@ package data
 		}
 		public static function getSel(str:String,tid:int):Object{
 			var temarr:Object = getArr(str);
-			if (temarr.length==0)return 0;
+			if (!temarr)return 0;
 			if(temarr[0].length>1){
 				for (var i:int = 0;i<temarr[0].length;i++){
 					if(temarr[0][i].id == tid){
@@ -44,7 +44,7 @@ package data
 				dataArr = new Array();
 				for (var i:int = 0;i<GameInit.dataArr.length;i++)dataArr.push(new Array());
 			}
-			return dataArr[GameInit.getlid(str)];
+			return dataArr[GameInit.getlid(str)] as Array;
 		}
 		//写入数据到程序
 		public static function setData(str:String,obj:Object):void{

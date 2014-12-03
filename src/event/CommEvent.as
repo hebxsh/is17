@@ -16,8 +16,6 @@ package event
 		public function CommEvent(type:String) 
 		{
 			super(type);
-		}
-		
+		}		
 	}
-
 }

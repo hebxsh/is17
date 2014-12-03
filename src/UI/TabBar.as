@@ -34,6 +34,7 @@ package UI
 			return m_index;
 		}
 		public function setIndex(ti:int):void{
+			m_index = ti;
 			downBar(ti);
 		}
 	}

@@ -92,7 +92,7 @@ package dialogs
 		private function loginHandler(e:MouseEvent):void{	
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, loaderComplete);
-			var res:URLRequest = new URLRequest(GameInit.LOGINURL);
+			var res:URLRequest = new URLRequest(GameInit.getLoginUrl());
 			res.method = URLRequestMethod.POST;
 			var ver:URLVariables = new URLVariables();
 			ver.username = uinput.text;
@@ -101,7 +101,10 @@ package dialogs
 			loader.load(res);			
 		}
 		private function loaderComplete(e:Event):void{
-			var userdata:Object = JSON.parse(e.target.data);
+			var userdata:Object = new Object();
+			if(e.target.data){
+				userdata = JSON.parse(e.target.data);					
+			}	
 			DataPool.getArr("user").push(userdata[0]);
 			this.visible = false;
 			var evt:CommEvent = new CommEvent(CommEvent.LOGIN);

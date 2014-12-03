@@ -18,12 +18,16 @@ package data
 		public static const wxsxArr:Array = ["jin","mu","shui","huo","tu","feng","lei","du","gu","zhou"];
 		public static const gfsxArr:Array = ["gongji","fangyu","shenfa","sudu","mingzhong","duobi","zhiming","zhaojia","lingli","hp"];
 		public static var FITERDELAY:int = 50;
+		public static const ISRELESE:Boolean = false;
+		
+		private static const LOCALURL:String = "http://192.168.0.217/";
+		private static const SERVERURL:String = "http://tayee.sinaapp.com/";
 		/**登陆*/
-		public static const LOGINURL:String = "http://127.0.0.1/login.php";	
+		private static const LOGINURL:String = "login.php";	
 		/**加载资源*/
-		public static const LOADDATAURL:String = "http://127.0.0.1/loaddata.php";
+		private static const LOADDATAURL:String = "loaddata.php";
 		/**修改资源*/
-		public static const CHANGEDATAURL:String = "http://127.0.0.1/changedata.php";
+		private static const CHANGEDATAURL:String = "changedata.php";
 		public function GameInit()
 		{
 			
@@ -81,6 +85,42 @@ package data
 					tstr = p_xsArr[i][1].toString();						
 				}
 				//}
+			}
+			return tstr;
+		}
+		/**
+		 * 返回登陆地址
+		 * */
+		public static function getLoginUrl():String{
+			var tstr:String;
+			if(ISRELESE){
+				tstr = SERVERURL+LOGINURL;
+			}else{
+				tstr = LOCALURL+LOGINURL;	
+			}
+			return tstr;
+		}
+		/**
+		 * 返回加载地址
+		 * */
+		public static function getLoadDataUrl():String{
+			var tstr:String;
+			if(ISRELESE){
+				tstr = SERVERURL+LOADDATAURL;
+			}else{
+				tstr = LOCALURL+LOADDATAURL;	
+			}
+			return tstr;
+		}
+		/**
+		 * 返回刷新地址
+		 * */
+		public static function getChangeDataUrl():String{
+			var tstr:String;
+			if(ISRELESE){
+				tstr = SERVERURL+CHANGEDATAURL;
+			}else{
+				tstr = LOCALURL+CHANGEDATAURL;	
 			}
 			return tstr;
 		}

@@ -11,24 +11,22 @@ package dialogs
 	import UI.TabBar;
 	import UI.ToolTip;
 	
-	import data.ChangeData;
 	import data.ColorInit;
 	import data.DataInit;
 	import data.DataPool;
 	import data.GameInit;
 	import data.RefreshData;
-	
-	import event.CommEvent;
 
 	public class XiulianDialog extends DialogObject
 	{
-		private var m_tab:TabBar;
-		private var timer:Timer = new Timer(1000);
+		public var m_tab:TabBar;
+		private var timer:Timer = new Timer(100);
 		private var bgSpr:Sprite = new Sprite();	
 //		private var skillSpr:Sprite = new Sprite();
 //		private var readSpr:Sprite = new Sprite();	
 //		private var itemArr:Array = [bgSpr,skillSpr,readSpr];
 		private var xltxt:MyText;
+		private var showtxt:MyText;
 		private var xlBar:BloodBar ;
 		private var ghBtn:MyButton ;
 		private var gfSkill:Object;
@@ -81,13 +79,16 @@ package dialogs
 			
 			gfSkill = DataInit.getCopy(getBookSkill(tab+2));
 			
-			xlBar = new BloodBar(DataInit.levelExp(gfSkill.nowlevel),280,10,true,0x33aa22);
+			xlBar = new BloodBar(0,280,10,true,0x33aa22);
 			xlBar.x = 20;
 			xlBar.y = 90;
-			xlBar.ReNum(gfSkill.exp);
+			if(gfSkill){
+				xlBar.ReNum(gfSkill.exp);
+				xlBar.ReMax(DataInit.levelExp(gfSkill.nowlevel));
+				xltxt.setText(showTxt(tab)+"<font color='"+GameInit.getHtmlColor(gfSkill.level)+"'>"+gfSkill.name+"</font>");
+			}
 			bgSpr.addChild(xlBar);
 			
-			xltxt.setText(showTxt(tab)+"<font color='"+GameInit.getHtmlColor(gfSkill.level)+"'>"+gfSkill.name+"</font>");
 			
 			ghBtn = new MyButton("更换");
 			ghBtn.x = 340;
@@ -99,20 +100,56 @@ package dialogs
 			ghBtn.x = 340;
 			ghBtn.y = 70;
 			ghBtn.addEventListener(MouseEvent.CLICK,xlHandler);
-			bgSpr.addChild(ghBtn);			
+			bgSpr.addChild(ghBtn);	
+			
+			
+			showtxt = new MyText(showTxt(tab));
+			showtxt.x = 20;
+			showtxt.y = 120;			
+			bgSpr.addChild(showtxt);
 		}
 		//刷新
+		public function Refresh():void{
+			refreshShow(m_tab.getIndex());
+		}
 		private function refreshShow(tab:int):void{
+			ghBtn.setTxt(showTxt(tab,true));
 			gfSkill = DataInit.getCopy(getBookSkill(tab+2));
 			if(!gfSkill){
 				xltxt.setText("无");			
 				xlBar.ReMax(0);
 				xlBar.ReNum(0);
+				showtxt.setText("");
 				return;
 			}
 			xltxt.setText(showTxt(tab)+"<font color='"+GameInit.getHtmlColor(gfSkill.level)+"'>"+gfSkill.name+"</font>");			
 			xlBar.ReMax(DataInit.levelExp(gfSkill.nowlevel));
 			xlBar.ReNum(gfSkill.exp);
+			
+			var tstr:String = "";
+			if(gfSkill.skill!="0"&&tab!=1){
+				if(tab==0){
+					tstr += "修炼进度:"+GameInit.getLevName(gfSkill.nowlevel)+"("+gfSkill.nowlevel+")\n";
+				}else if(tab==2){
+					tstr += "参悟程度:"+GameInit.getLevName(gfSkill.nowlevel)+"("+gfSkill.nowlevel+")\n";
+				}					
+				
+				var temArr:Array = (gfSkill.skill as String).split(',');
+				if(temArr){
+					for (var j:int = 0;j<temArr.length;j++){
+						var tlArr:Array = temArr[j].split("&");
+						var temSkill:Object =  DataPool.getSel("skill",tlArr[0]);
+						var jhColor:String;
+						if (int(tlArr[1])<=gfSkill.nowlevel){
+							jhColor = GameInit.getHtmlColor(temSkill.level);
+						}else{
+							jhColor = "#aaaaaa";
+						}
+						tstr += "<font color='"+GameInit.getHtmlColor(temSkill.level)+"'>"+temSkill.name+"</font><font color='"+jhColor+"'>  ("+tlArr[1]+")</font>\n";
+					}
+				}
+			}
+			showtxt.setText(tstr);
 		}
 		//文字显示
 		private function showTxt(tabxl:int,tabbtn:Boolean = false):String{
@@ -138,15 +175,19 @@ package dialogs
 		
 		//更换相关技能
 		private function ghHandler(e:MouseEvent):void{
-			alone.skilldialog.setTitle("xl");
+			if(m_tab.getIndex()<2){
+				alone.skilldialog.setTitle("xl",m_tab.getIndex()+1);
+			}else if(m_tab.getIndex()==2){
+				alone.bagdialog.setTitle("bag","book");
+			}
 		}
 		/**
 		 * 更换修炼技能
 		 * */
 		public function addSki(id:int):void{
 			this.timer.stop();
-			DataPool.getArr("userskill")[xlIndex].xiulian = 0;
-			DataPool.getSel("userskill",id).xiulian = m_tab.getIndex()+2;
+			//DataPool.getArr("userskill")[xlIndex].xiulian = 0;
+			//DataPool.getSel("userskill",id).xiulian = m_tab.getIndex()+2;
 			if(gfSkill)
 			RefreshData.updateData("userskill","xiulian","0","id",gfSkill.id.toString());
 			RefreshData.updateData("userskill","xiulian",(m_tab.getIndex()+2)+"","id",id.toString());
@@ -159,24 +200,26 @@ package dialogs
 		//获取相关技能
 		private function getBookSkill(tabid:int):Object{
 			var bookskill:Object;
-			for (var i:int = 0;i<DataPool.getArr("userskill").length;i++){
-				var tid:int = DataPool.getArr("userskill")[i].id;
-				var txiu:int = DataPool.getArr("userskill")[i].xiulian;
-				if (txiu==tabid){
-					if(tid<40000){
-						if (DataPool.getSel("skill",tid)){
-							bookskill = DataPool.getSel("skill",tid);
-							bookskill.nowlevel = DataPool.getArr("userskill")[i].nowlevel;
-							bookskill.exp = DataPool.getArr("userskill")[i].exp;
+			if(DataPool.getArr("userskill")){
+				for (var i:int = 0;i<DataPool.getArr("userskill").length;i++){
+					var tid:int = DataPool.getArr("userskill")[i].id;
+					var txiu:int = DataPool.getArr("userskill")[i].xiulian;
+					if (txiu==tabid){
+						if(tid<40000){
+							if (DataPool.getSel("skill",tid)){
+								bookskill = DataPool.getSel("skill",tid);
+								bookskill.nowlevel = DataPool.getArr("userskill")[i].nowlevel;
+								bookskill.exp = DataPool.getArr("userskill")[i].exp;
+							}
+						}else if(tid>40000){
+							if (DataPool.getSel("book",tid)){
+								bookskill = DataPool.getSel("book",tid);
+								bookskill.nowlevel = DataPool.getArr("userskill")[i].nowlevel;
+								bookskill.exp = DataPool.getArr("userskill")[i].exp;
+							}
 						}
-					}else if(tid>40000){
-						if (DataPool.getSel("book",tid)){
-							bookskill = DataPool.getSel("book",tid);
-							bookskill.nowlevel = DataPool.getArr("userskill")[i].nowlevel;
-							bookskill.exp = DataPool.getArr("userskill")[i].exp;
-						}
+						xlIndex = i;
 					}
-					xlIndex = i;
 				}
 			}
 			return bookskill;
@@ -191,8 +234,21 @@ package dialogs
 					timer.stop();
 				}else{
 					RefreshData.updateData("userskill","exp","0","id",gfSkill.id.toString());
-					RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel+1+"","id",gfSkill.id.toString());
-					refreshShow(m_tab.getIndex());
+					RefreshData.updateData("userskill","nowlevel",(int(gfSkill.nowlevel)+1)+"","id",gfSkill.id.toString());
+					//timer.stop();//refreshShow(m_tab.getIndex());
+					if (gfSkill.skill=="0")return;
+					var temArr:Array = (gfSkill.skill as String).split(',');
+					if(temArr){
+						for (var j:int = 0;j<temArr.length;j++){
+							var tlArr:Array = temArr[j].split("&");
+							if(int(gfSkill.nowlevel)+1==int(tlArr[1])){
+								RefreshData.inser("userskill",tlArr[0]);
+								var tooltip:ToolTip = new ToolTip();
+								var temSkill:Object =  DataPool.getSel("skill",tlArr[0]);
+								tooltip.show("领悟了：<font color='"+GameInit.getHtmlColor(temSkill.level)+"'>"+temSkill.name+"</font>");
+							}
+						}
+					}
 				}
 			}			
 		}

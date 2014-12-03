@@ -58,7 +58,10 @@ package dialogs
 			fenduanNum++;
 		}
 		private function loaderLocalComplete(e:Event):void{
-			var userdata:Object = JSON.parse(e.target.data);			
+			var userdata:Object = new Object();
+			if(e.target.data){
+				userdata = JSON.parse(e.target.data);					
+			}				
 			DataPool.setData(GameInit.dataArr[localTypeNum], userdata);	
 			++localTypeNum;
 			if(localTypeNum<GameInit.LOCALDATALEN){
@@ -75,7 +78,7 @@ package dialogs
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, loaderServerComplete);
 			loader.addEventListener(ProgressEvent.PROGRESS,onprogress);
-			var res:URLRequest = new URLRequest(GameInit.LOADDATAURL);
+			var res:URLRequest = new URLRequest(GameInit.getLoadDataUrl());
 			res.method = URLRequestMethod.POST;
 			var ver:URLVariables = new URLVariables();
 			ver.tablename = str;
@@ -84,7 +87,10 @@ package dialogs
 		}
 		
 		private function loaderServerComplete(e:Event):void{
-			var userdata:Object = JSON.parse(e.target.data);
+			var userdata:Object = new Object();
+			if(e.target.data!="load filed!"){
+				userdata = JSON.parse(e.target.data);					
+			}	
 			DataPool.setData(GameInit.dataArr[serverTypeNum], userdata);	
 			++serverTypeNum;
 			if(serverTypeNum<GameInit.dataArr.length){
@@ -109,7 +115,7 @@ package dialogs
 			dataStr = str;
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, loaderRefreshComplete);
-			var res:URLRequest = new URLRequest(GameInit.LOADDATAURL);
+			var res:URLRequest = new URLRequest(GameInit.getLoadDataUrl());
 			res.method = URLRequestMethod.POST;
 			var ver:URLVariables = new URLVariables();
 			ver.tablename = str;
@@ -118,11 +124,15 @@ package dialogs
 		}
 		
 		private static function loaderRefreshComplete(e:Event):void{
-			//trace(dataStr+"*****"+e.target.data);
-			var userdata:Object = JSON.parse(e.target.data);
+			var userdata:Object = new Object();
+			if(e.target.data!="load filed!"){
+				userdata = JSON.parse(e.target.data);					
+			}	
 			DataPool.setData(dataStr, userdata);
-			if(alone.skilldialog.visible)alone.skilldialog.Refresh();
-			if(alone.bagdialog.visible)alone.bagdialog.Refresh();
+			if(alone.skilldialog)alone.skilldialog.Refresh();
+			if(alone.bagdialog)alone.bagdialog.Refresh();
+			if(alone.xiuliandialog)alone.xiuliandialog.Refresh();
+			if(alone.playerdialog)alone.playerdialog.Refresh();
 		}
 	}
 }

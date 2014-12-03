@@ -6,6 +6,8 @@ package dialogs
 	import UI.MyButton;
 	import UI.MyText;
 	
+	import data.ColorInit;
+	import data.DataPool;
 	import data.GameInit;
 	import data.PlayerInit;
 
@@ -81,12 +83,24 @@ package dialogs
 					case "4":
 						tstr += "类型： 辅助书籍\n\n";
 						tstr += tdata.shuoming;
+						if(tdata.skill!="0")
+						tstr += "\n"+"可习得：\n";
 						break;
 					case "5":
 						tstr += "类型：功法\n\n";
-						tstr += tdata.shuoming;
+						tstr += "可领悟：\n";
+						
 						break;
-
+				}
+				if(tdata.skill!="0"){
+					var temArr:Array = (tdata.skill as String).split(',');
+					if(temArr){
+						for (var j:int = 0;j<temArr.length;j++){
+							var tlArr:Array = temArr[j].split("&");
+							var temSkill:Object =  DataPool.getSel("skill",tlArr[0]);
+							tstr += "<font color='"+GameInit.getHtmlColor(temSkill.level)+"'>"+temSkill.name+"</font>("+tlArr[1]+")\n";
+						}
+					}
 				}
 				
 				if (ts!==1){

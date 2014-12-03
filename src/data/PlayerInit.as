@@ -118,6 +118,10 @@ package data
 			}
 			return tstr;
 		}
+		/**
+		 * 设置修改属性
+		 * 属性名，属性值，添加(false,默认)或者直接修改(true)
+		 * */
 		public static function setSx(str:String,num:int,sd:Boolean = false):void{
 			//for (var i:int = 0;i<p_xsArr.length;i++){				
 				//if (str == p_xsArr[i][0]){
@@ -170,9 +174,6 @@ package data
 				if (str == "gu")gu += num;
 				if (str == "zhou")zhou += num;
 			}
-					
-				//}				
-			//}
 		}
 	}
 }

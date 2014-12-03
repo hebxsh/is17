@@ -53,7 +53,10 @@ package dialogs
 					break;
 				case "fabao2":
 					theTitle("法 宝");
-					break;				
+					break;
+				case "book":
+					theTitle("书 籍");
+					break;	
 			}
 			theOpen();
 		}
@@ -79,20 +82,28 @@ package dialogs
 			}
 			
 			var tmStr:String = "";
-			for (var i:int = 0;i<DataPool.getArr("bag").length;i++){
-				var temid:int = DataPool.getArr("bag")[i].id;
-				if(temid<20000)tmStr = "equip";
-				else if(temid>40000&&temid<50000)tmStr = "book";
-				if (DataPool.getSel(tmStr,temid)){
-					if (m_es == "bag"){						
-						var bagitem:BagItem = new BagItem(tmStr,temid,i);
-						equSpr.addContent(bagitem,10);
-						
-					}else if(m_es == "equip"&&tmStr=="equip"){
-						var temEquObj:Object = DataPool.getSel("equip",temid);
-						if(temEquObj.type == typeid){
-							var equitem:BagItem = new BagItem("equip",temid,i);
-							equSpr.addContent(equitem,10);
+			if(DataPool.getArr("bag")){
+				for (var i:int = 0;i<DataPool.getArr("bag").length;i++){
+					var temid:int = DataPool.getArr("bag")[i].id;
+					if(temid<20000)tmStr = "equip";
+					else if(temid>40000&&temid<50000)tmStr = "book";
+					if (DataPool.getSel(tmStr,temid)){
+						if (m_es == "bag"){						
+							var bagitem:BagItem = new BagItem(tmStr,temid,i);
+							equSpr.addContent(bagitem,10);
+							
+						}else if(m_es == "equip"&&tmStr=="equip"){
+							var temEquObj:Object = DataPool.getSel("equip",temid);
+							if(temEquObj.type == typeid){
+								var equitem:BagItem = new BagItem("equip",temid,i);
+								equSpr.addContent(equitem,10);
+							}
+						}else if(m_es == "book"&&tmStr=="book"){
+							var temBookObj:Object = DataPool.getSel("book",temid);
+							if(temBookObj.type == "4"){//如果是可阅读书籍
+								var bookitem:BagItem = new BagItem("book",temid,i);
+								equSpr.addContent(bookitem,10);
+							}
 						}
 					}
 				}

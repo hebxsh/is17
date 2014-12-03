@@ -11,8 +11,10 @@ package dialogs
 	{	
 		private var player:MyButton;
 		private var bag:MyButton;
-		private var custom:MyButton;
+		private var skill:MyButton;
 		private var xiulian:MyButton;
+		private var custom:MyButton;
+		
 		public function BottomUI()
 		{
 			init();
@@ -32,17 +34,27 @@ package dialogs
 			bag.addEventListener(MouseEvent.CLICK,bcHandler);
 			this.addChild(bag);
 			
-			if (!custom)
-				custom = new MyButton("关卡");
-			custom.x = bag.x+bag.width+5;
-			custom.addEventListener(MouseEvent.CLICK,ccHandler);
-			this.addChild(custom);
+			if (!skill)
+				skill = new MyButton("技能");
+			skill.x = bag.x+bag.width+5;
+			skill.addEventListener(MouseEvent.CLICK,skHandler);
+			this.addChild(skill);
 			
 			if (!xiulian)
 				xiulian = new MyButton("修炼");
-			xiulian.x = custom.x+custom.width+5;
+			xiulian.x = skill.x+skill.width+5;
 			xiulian.addEventListener(MouseEvent.CLICK,xlHandler);
 			this.addChild(xiulian);
+			
+			
+			if (!custom)
+				custom = new MyButton("关卡");
+			custom.x = xiulian.x+xiulian.width+5;
+			custom.addEventListener(MouseEvent.CLICK,ccHandler);
+			this.addChild(custom);
+			
+			
+			
 		}
 		private function pcHandler(e:MouseEvent):void{
 			alone.playerdialog.theOpen();
@@ -52,13 +64,19 @@ package dialogs
 			alone.bagdialog.setTitle();
 			alone.bagdialog.Refresh();			
 		}
+		private function skHandler(e:MouseEvent):void{
+			alone.skilldialog.theOpen();
+			alone.skilldialog.setTitle("xl",9);
+		//	alone.skilldialog.Refresh();
+		}
+		private function xlHandler(e:MouseEvent):void{
+			alone.xiuliandialog.theOpen();
+			alone.xiuliandialog.Refresh();
+		}
 		private function ccHandler(e:MouseEvent):void{
 			alone.customdialog.theOpen();
 			alone.customdialog.Refresh();			
 		}
-		private function xlHandler(e:MouseEvent):void{
-			alone.xiuliandialog.theOpen();
-			//alone.xiuliandialog.Refresh();
-		}
+		
 	}
 }

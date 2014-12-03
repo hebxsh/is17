@@ -22,7 +22,7 @@ package data
 			TABLENAME = str;
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, loaderServerComplete);
-			var res:URLRequest = new URLRequest(GameInit.CHANGEDATAURL);
+			var res:URLRequest = new URLRequest(GameInit.getChangeDataUrl());
 			res.method = URLRequestMethod.POST;
 			var ver:URLVariables = new URLVariables();
 			ver.tablename = str;

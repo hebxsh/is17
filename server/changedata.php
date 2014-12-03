@@ -1,6 +1,7 @@
 ﻿<?php
 	//include 'link.php';
 	$link=mysqli_connect("127.0.0.1","root","","test");	
+	//$link=mysql_connect(SAE_MYSQL_HOST_M.':'.SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS,SAE_MYSQL_DB);
 	
 	$tablename=$_POST['tablename'];
 	$sqltype=$_POST['sqltype'];
@@ -35,7 +36,7 @@
 			if($tablename == "bag"){
 				$tstr = "insert into from bag where mainid='".$sqldata."';";
 			}else if($tablename == "userskill"){
-				$tstr = "insert into userskill (id,nowlevel,exp,useing,xiulian) values (".$insdata['id'].",0,0,0,0);";
+				$tstr = "insert into userskill (id,nowlevel,exp,useing,xiulian) values (".$sqldata.",0,0,0,0);";
 			}
 			$query = mysqli_query($link,$tstr); 
 			break;
@@ -47,7 +48,7 @@
 				$tstr = "insert into bag (id,num) values (".$arr[0]['nameShow'].",1)";
 			}else if($tablename=="skill"){
 				$tstr = "UPDATE user SET ".$arr[0]['type']."='".$arr[0]['show']."'";// . " WHERE " . $arr[0]['typeName']."='".$arr[0]['nameShow']."'";	
-				echo $tstr;
+				//echo $tstr;
 				$query =  mysqli_query($link,$tstr); 	
 				$tstr = "UPDATE userskill SET useing = 0 where id='".$arr[0]['nameShow']."'";				
 			}//echo($tstr);
@@ -152,5 +153,16 @@
 		}
 		global $link;
 		$query = mysqli_query($link,$tstr); 
+	}
+	//根据技能变化刷新人物属性
+	function changeAttribute(){
+		global $link;
+		$sql = "SELECT * FROM userskill "; 
+		$query = mysqli_query($link,$sql); 
+		$rows = array();
+		while ($row=mysqli_fetch_array($query,MYSQL_ASSOC)) {
+			$rows[] = $row; 
+		}
+
 	}
 ?>

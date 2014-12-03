@@ -7,12 +7,9 @@ package
 	import flash.events.Event;
 	import flash.utils.setTimeout;
 	
-	import UI.CodeImageIcon;
+	import UI.ToolTip;
 	
-	import data.DataPool;
-	import data.DbData;
 	import data.GameInit;
-	import dialogs.LoadData;
 	import data.PlayerInit;
 	
 	import dialogs.BagDialog;
@@ -62,7 +59,7 @@ package
 			//getdata.init();
 			//setTimeout(init,1);
 			//延时第二帧刷新场景大小，pc调试用
-			setTimeout(login,1);			
+			setTimeout(login,1);	
 			//init();
 			//关闭窗口
 			win = stage.nativeWindow;
@@ -87,6 +84,8 @@ package
 		}
 		private function init(e:CommEvent = null):void{	
 			//GameInit.m_stage = stage;
+			var bili:Number = stage.fullScreenWidth/480;
+			
 			PlayerInit.init();
 			//背景场景地图界面
 			if (!maplayer)
@@ -103,20 +102,20 @@ package
 			this.addChild(upui);
 			if (!bottomui)
 				bottomui = new BottomUI;
-			bottomui.y = stage.stageHeight-bottomui.height;
+			bottomui.y = stage.fullScreenHeight/bili-bottomui.height;
 			this.addChild(bottomui);	
 			//玩家信息面板
 			if (!playerdialog)
 				playerdialog = new PlayerDialog;
 			this.addChild(playerdialog);
-			//背包面板
-			if (!bagdialog)
-				bagdialog = new BagDialog;
-			this.addChild(bagdialog);
 			//修炼面板
 			if (!xiuliandialog)
 				xiuliandialog = new XiulianDialog;
 			this.addChild(xiuliandialog);	
+			//背包面板
+			if (!bagdialog)
+				bagdialog = new BagDialog;
+			this.addChild(bagdialog);			
 			//技能面板
 			if (!skilldialog)
 				skilldialog = new SkillDialog;

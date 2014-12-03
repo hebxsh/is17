@@ -29,10 +29,7 @@ package dialogs
 		private var fangju:Sprite = new Sprite();
 		private var fabao1:Sprite = new Sprite();
 		private var fabao2:Sprite = new Sprite();
-//		private var skill1:Sprite = new Sprite();
-//		private var skill2:Sprite = new Sprite();
-//		private var skill3:Sprite = new Sprite();
-//		private var skill4:Sprite = new Sprite();
+
 		private var equipSpr:Sprite = new Sprite();
 		
 		/**技能相关*/
@@ -169,27 +166,23 @@ package dialogs
 		}
 		//添加技能背景
 		private function createSkill():void{
-			createText(skillSpr,20,25,"自动技能",0x00EC00);
-			createText(skillSpr,20,205,"主动技能",0x00EC00);
-			createText(skillSpr,20,385,"修炼技能",0x00EC00);
+			createText(skillSpr,20,20,"自动技能",0x00EC00);
+			createText(skillSpr,20,200,"主动技能",0x00EC00);
+			createText(skillSpr,20,380,"修炼技能",0x00EC00);
 			
 			for (var i:int = 0;i<aotuArr.length;i++){
-				createAddBg(autoSpr,autoSkiArr,i%2*190+20,int(i/2)*70+25,aotuArr[i]);
+				createAddBg(autoSpr,autoSkiArr,i%2*190+20,int(i/2)*70+25+40,aotuArr[i]);
 			}
 			for ( i = 0;i<zhuArr.length;i++){
-				createAddBg(zhuSpr,zhuSkiArr,i%2*190+20,int(i/2)*70+205,zhuArr[i]);
+				createAddBg(zhuSpr,zhuSkiArr,i%2*190+20,int(i/2)*70+205+40,zhuArr[i]);
 			}
 			for ( i = 0;i<xiuArr.length;i++){
-				createAddBg(xiuSpr,xiuSkiArr,i%2*190+20,int(i/2)*70+385,xiuArr[i]);
+				createAddBg(xiuSpr,xiuSkiArr,i%2*190+20,int(i/2)*70+385+40,xiuArr[i]);
 			}
 			skillSpr.addChild(autoSpr);
 			skillSpr.addChild(zhuSpr);
 			skillSpr.addChild(xiuSpr);
 			
-//			createSki(skill1,20,20,"skill1");
-//			createSki(skill2,210,20,"skill2");
-//			createSki(skill3,20,110,"skill3");
-//			createSki(skill4,210,110,"skill4");	
 		}
 		private function addSkill():void{
 			for (var i:int = 0;i<skillStrArr.length;i++){
@@ -434,11 +427,13 @@ package dialogs
 		//更新技能状态
 		private function refreshSkill(id:int,tnum:int):void{
 			var arr:Array = DataPool.getArr("userskill");
-			var len:int = arr.length;
-			for (var i:int = 0;i<len;i++){
-				if(arr[i].id == id){
-					arr[i].useing = tnum;
-					//saveSkill("useing",tnum.toString(),"id",id.toString());
+			if(arr){
+				var len:int = arr.length;
+				for (var i:int = 0;i<len;i++){
+					if(arr[i].id == id){
+						arr[i].useing = tnum;
+						//saveSkill("useing",tnum.toString(),"id",id.toString());
+					}
 				}
 			}
 		}
@@ -469,9 +464,32 @@ package dialogs
 		}
 		
 		//刷新属性
-		public function Refresh():void{			
+		public function Refresh():void{
+			//初始化基础属性
 			PlayerInit.init();
-			
+			//添加修炼技能属性
+			var temSkillArr:Array = DataPool.getArr("userskill");
+			if(temSkillArr){
+				for(var m:int = 0;m<temSkillArr.length;m++){
+					var temSkillObj:Object = DataPool.getSel("skill",int(temSkillArr[m].id));
+					if(temSkillObj&&temSkillObj["type"]!="8")continue;
+					for(var temSkillItem:String in temSkillObj){
+						PlayerInit.setSx(temSkillItem,int(temSkillObj[temSkillItem])*int(temSkillArr[m].nowlevel));
+					}
+				}
+			}
+			//添加书籍阅读属性
+			var temBookArr:Array = DataPool.getArr("userskill");
+			if(temBookArr){
+				for(var n:int = 0;n<temBookArr.length;n++){
+					var temBookObj:Object = DataPool.getSel("book",int(temBookArr[n].id));
+					if(temBookObj&&temBookObj["type"]!="4")continue;
+					for(var temBookItem:String in temBookObj){
+						PlayerInit.setSx(temBookItem,int(temBookObj[temBookItem])*int(temBookArr[n].nowlevel));
+					}
+				}
+			}
+			//根据身上装备添加属性
 			for(var i:int = 0;i<temEquSpr.length;i++){
 				if(temEquSpr[i].numChildren>0){
 					for(var property:String in temEquSpr[i].getChildAt(0).edata){
@@ -481,14 +499,14 @@ package dialogs
 					//save(gettypename(i),"0");
 				}
 			}
-			
+			//设定最大生命值
 			PlayerInit.maxhp = PlayerInit.hp;
-			
+			//刷新显示属性
 			for (i = 0;i<m_sxArr.length;i++){
 				m_sxArr[i][1].setText(PlayerInit.getSx(m_sxArr[i][0]));
 			}
 
-			//写入技能数据
+			//将自动释放的技能写入释放技能列表
 			while(PlayerInit.p_skillArr.length>0){
 				PlayerInit.p_skillArr.shift();
 			}

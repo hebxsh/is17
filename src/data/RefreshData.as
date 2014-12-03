@@ -68,6 +68,8 @@ package data
 			LoadData.RefreshData(r_tablestr);
 			if (r_tablestr=="user"){
 				LoadData.RefreshData("bag");
+			}if (r_tablestr=="userskill"){
+				LoadData.RefreshData("userskill");
 			}
 		}
 		
