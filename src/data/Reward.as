@@ -26,11 +26,11 @@ package data
 				if (alone.fightlayer.visible){
 					alone.fightlayer.showReward(tstr);
 				}
-				//if(int(temboj[k].id)<40000){
+				if(int(temboj[k].id)<20000||int(temboj[k].id)>40000){
 					LoadData.RefreshData("bag");
-				//}else{
+				}else{
 					LoadData.RefreshData("userskill");
-				//}
+				}
 			}
 			
 		}

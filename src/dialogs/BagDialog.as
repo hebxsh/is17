@@ -10,7 +10,7 @@ package dialogs
 	import data.GameInit;
 	
 	public class BagDialog extends DialogObject	{
-		private var equSpr:Panel;
+		private var equPanel:Panel;
 		private var m_type:String;
 		private var m_es:String;
 		public function BagDialog()
@@ -25,10 +25,10 @@ package dialogs
 			this.graphics.beginFill(ColorInit.dialogBgColor);
 			this.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
-			equSpr = new Panel(400,600);
-			equSpr.x = 40;
-			equSpr.y = 90;
-			this.addChild(equSpr);
+			if(!equPanel)equPanel = new Panel(400,600);
+			equPanel.x = 40;
+			equPanel.y = 90;
+			this.addChild(equPanel);
 			
 			var closeBtn:MyButton = new MyButton("X",0xff0000);
 			closeBtn.x = 420;
@@ -37,6 +37,10 @@ package dialogs
 			this.addChild(closeBtn);
 			Refresh();
 		}
+		/**
+		 * 打开背包面板
+		 * 装备位置或者类型，显示类型。
+		 * */
 		public function setTitle(type:String = "bag",es:String = "bag"):void{
 			theTitle("背 包");
 			m_type = type;
@@ -63,7 +67,8 @@ package dialogs
 
 		//刷新装备
 		public function Refresh():void{	
-			equSpr.removeContents();
+			if(!equPanel)return;
+			equPanel.removeContents();
 			
 			var typeid:int = 0;
 			switch(m_type){
@@ -90,19 +95,19 @@ package dialogs
 					if (DataPool.getSel(tmStr,temid)){
 						if (m_es == "bag"){						
 							var bagitem:BagItem = new BagItem(tmStr,temid,i);
-							equSpr.addContent(bagitem,10);
+							equPanel.addContent(bagitem,10);
 							
 						}else if(m_es == "equip"&&tmStr=="equip"){
 							var temEquObj:Object = DataPool.getSel("equip",temid);
 							if(temEquObj.type == typeid){
 								var equitem:BagItem = new BagItem("equip",temid,i);
-								equSpr.addContent(equitem,10);
+								equPanel.addContent(equitem,10);
 							}
 						}else if(m_es == "book"&&tmStr=="book"){
 							var temBookObj:Object = DataPool.getSel("book",temid);
-							if(temBookObj.type == "4"){//如果是可阅读书籍
+							if(temBookObj.type == m_type){//判断显示的书籍类型
 								var bookitem:BagItem = new BagItem("book",temid,i);
-								equSpr.addContent(bookitem,10);
+								equPanel.addContent(bookitem,10);
 							}
 						}
 					}
@@ -111,9 +116,9 @@ package dialogs
 		}
 		
 		public function closeHandler(e:MouseEvent = null):void{
-			equSpr.removeContents();
-			//while(equSpr.numChildren>0)equSpr.removeChildAt(0);
-			equSpr.graphics.clear();
+			equPanel.removeContents();
+			//while(equPanel.numChildren>0)equPanel.removeChildAt(0);
+			//equPanel.graphics.clear();
 			this.theDest();
 		}
 	}

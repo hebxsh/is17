@@ -310,7 +310,7 @@ package dialogs
 				if (tpid==2&&temEquSpr[tpid].numChildren>0)tpid=3;
 				if (tpid==2&&temEquSpr[tpid].numChildren>0&&temEquSpr[tpid+1].numChildren>0)tpid=2+int(Math.random()*2);
 				removeEqu(tpid);
-				RefreshData.puton("equip",gettypename(typeid),id.toString(),gettypename(typeid),mainid.toString());
+				RefreshData.puton("equip",gettypename(tpid),id.toString(),gettypename(tpid),mainid.toString());
 			}			
 			var tbx:EquipBox = new EquipBox(DataPool.getSel("equip",id));
 			temEquSpr[tpid].addChild(tbx);
@@ -327,7 +327,7 @@ package dialogs
 				var xx:Object = {id:tmid,num:1};
 				//SqlDb.insert("bag",{id:tmid,num:1});	
 				//DataPool.getArr("bag").push(xx);	
-				RefreshData.unload("equip",gettypename(typeid),"0",gettypename(typeid),tmid.toString());
+				RefreshData.unload("user",gettypename(tpid),"0",gettypename(tpid),tmid.toString());
 			}
 			Refresh();
 		}
@@ -454,7 +454,7 @@ package dialogs
 				/**添加移除技能，不改变技能列表，只更新技能状态。*/
 				//SqlDb.insert("userskill",{id:tmid,level:tmlevel,exp:tmexp});
 				//DataPool.getArr("bag").push(xx);	
-				RefreshData.unload("skill",skillname,"0",skillname,tmid.toString());
+				RefreshData.unload("userskill",skillname,"0",skillname,tmid.toString());
 			}
 			Refresh();
 		}

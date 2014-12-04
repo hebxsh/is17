@@ -15,6 +15,7 @@ package dialogs
 	import data.DataInit;
 	import data.DataPool;
 	import data.GameInit;
+	import data.PlayerInit;
 	import data.RefreshData;
 
 	public class XiulianDialog extends DialogObject
@@ -127,9 +128,20 @@ package dialogs
 			xlBar.ReNum(gfSkill.exp);
 			
 			var tstr:String = "";
-			if(gfSkill.skill!="0"&&tab!=1){
+			if(gfSkill.skill&&gfSkill.skill!="0"&&tab!=1){
 				if(tab==0){
-					tstr += "修炼进度:"+GameInit.getLevName(gfSkill.nowlevel)+"("+gfSkill.nowlevel+")\n";
+					tstr += "修炼进度："+GameInit.getLevName(gfSkill.nowlevel)+"("+gfSkill.nowlevel+")\n";
+					tstr += "加成属性：";
+					var shuxnum:int = 0;
+					for (var i:int = 0;i<PlayerInit.p_xsArr.length;i++){			
+						for(var property:String in gfSkill){				
+							if (property == PlayerInit.p_xsArr[i][0]){
+								if(shuxnum>0)tstr += "　　　　　";
+								if(gfSkill[property]!="0")tstr += PlayerInit.getName(property)+"： "+int(gfSkill[property])*gfSkill.nowlevel+"\n";
+								shuxnum++;
+							}
+						}
+					} 
 				}else if(tab==2){
 					tstr += "参悟程度:"+GameInit.getLevName(gfSkill.nowlevel)+"("+gfSkill.nowlevel+")\n";
 				}					
@@ -175,15 +187,17 @@ package dialogs
 		
 		//更换相关技能
 		private function ghHandler(e:MouseEvent):void{
-			if(m_tab.getIndex()<2){
+			if(m_tab.getIndex()==0){//功法
+				alone.bagdialog.setTitle("5","book");
+			}else if(m_tab.getIndex()==1){//技能
 				alone.skilldialog.setTitle("xl",m_tab.getIndex()+1);
-			}else if(m_tab.getIndex()==2){
-				alone.bagdialog.setTitle("bag","book");
+			}else {//修炼功法，书籍
+				alone.bagdialog.setTitle("4","book");
 			}
 		}
 		/**
 		 * 更换修炼技能
-		 * */
+		 **/
 		public function addSki(id:int):void{
 			this.timer.stop();
 			//DataPool.getArr("userskill")[xlIndex].xiulian = 0;
@@ -229,6 +243,8 @@ package dialogs
 			++gfSkill.exp;
 			if (gfSkill.exp<DataInit.levelExp(gfSkill.nowlevel)){
 				xlBar.ReNum(gfSkill.exp);
+				RefreshData.updateData("userskill","exp","0","id",gfSkill.id.toString());
+				RefreshData.updateData("userskill","nowlevel",(int(gfSkill.nowlevel)+1)+"","id",gfSkill.id.toString());
 			}else{//升级
 				if (gfSkill.nowlevel+1==gfSkill.maxlevel){
 					timer.stop();

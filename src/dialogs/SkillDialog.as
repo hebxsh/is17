@@ -44,6 +44,7 @@ package dialogs
 		
 		//刷新技能
 		public function Refresh():void{	
+			if (!skiPanel)return;
 			skiPanel.removeContents();
 			if(DataPool.getArr("userskill")){
 				for (var i:int = 0;i<DataPool.getArr("userskill").length;i++){
