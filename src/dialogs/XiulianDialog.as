@@ -51,7 +51,6 @@ package dialogs
 			this.graphics.beginFill(0X998877);
 			this.graphics.drawRect((GameInit.m_stage.stageWidth-400)>>1,120,400,600);
 			
-			
 			bgSpr.x = 40;
 			bgSpr.y = 120;
 			this.addChild(bgSpr);
@@ -243,8 +242,8 @@ package dialogs
 			++gfSkill.exp;
 			if (gfSkill.exp<DataInit.levelExp(gfSkill.nowlevel)){
 				xlBar.ReNum(gfSkill.exp);
-				RefreshData.updateData("userskill","exp","0","id",gfSkill.id.toString());
-				RefreshData.updateData("userskill","nowlevel",(int(gfSkill.nowlevel)+1)+"","id",gfSkill.id.toString());
+				//RefreshData.updateData("userskill","exp",gfSkill.exp,"id",gfSkill.id.toString());
+				//RefreshData.updateData("userskill","nowlevel",(int(gfSkill.nowlevel)+1)+"","id",gfSkill.id.toString());
 			}else{//升级
 				if (gfSkill.nowlevel+1==gfSkill.maxlevel){
 					timer.stop();
@@ -252,7 +251,7 @@ package dialogs
 					RefreshData.updateData("userskill","exp","0","id",gfSkill.id.toString());
 					RefreshData.updateData("userskill","nowlevel",(int(gfSkill.nowlevel)+1)+"","id",gfSkill.id.toString());
 					//timer.stop();//refreshShow(m_tab.getIndex());
-					if (gfSkill.skill=="0")return;
+					if (!gfSkill.hasOwnProperty("skill")||gfSkill.skill=="0")return;trace (gfSkill.skill)
 					var temArr:Array = (gfSkill.skill as String).split(',');
 					if(temArr){
 						for (var j:int = 0;j<temArr.length;j++){
@@ -271,19 +270,20 @@ package dialogs
 		//点击选项卡
 		private function tabHandler(e:MouseEvent):void{
 			this.timer.stop();
-			refreshShow(m_tab.getIndex());
-			
-			if(!gfSkill)return;
-			RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
-			RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());			
+			if(gfSkill){
+				RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
+				RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
+			}
+			refreshShow(m_tab.getIndex());		
 		}		
 		//关闭
 		public function closeHandler(e:MouseEvent = null):void{
 			this.timer.stop();
 			this.theDest();
-			if(!gfSkill)return;
-			RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
-			RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
+			if(gfSkill){
+				RefreshData.updateData("userskill","exp",gfSkill.exp.toString(),"id",gfSkill.id.toString());
+				RefreshData.updateData("userskill","nowlevel",gfSkill.nowlevel.toString(),"id",gfSkill.id.toString());
+			}
 			
 		}
 	}
