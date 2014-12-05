@@ -42,14 +42,14 @@
 			break;
 		case "unloa"://取下装备或者技能
 			$arr = json_decode($sqldata, true);
-			if($tablename=="equip"){
+			if($tablename=="user"){
 				$tstr = "UPDATE user SET ".$arr[0]['type']."='".$arr[0]['show']."'"; //. " WHERE " . $arr[0]['typeName']."='".$arr[0]['nameShow']."';";
-				$query =  mysqli_query($link,$tstr); 				
+				$query =  mysqli_query($link,$tstr); 
 				$tstr = "insert into bag (id,num) values (".$arr[0]['nameShow'].",1)";
-			}else if($tablename=="skill"){
+			}else if($tablename=="userskill"){
 				$tstr = "UPDATE user SET ".$arr[0]['type']."='".$arr[0]['show']."'";// . " WHERE " . $arr[0]['typeName']."='".$arr[0]['nameShow']."'";	
 				//echo $tstr;
-				$query =  mysqli_query($link,$tstr); 	
+				$query =  mysqli_query($link,$tstr); 
 				$tstr = "UPDATE userskill SET useing = 0 where id='".$arr[0]['nameShow']."'";				
 			}//echo($tstr);
 			$query = mysqli_query($link,$tstr); 
