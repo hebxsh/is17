@@ -6,6 +6,7 @@ package dialogs
 	import UI.EquipBox;
 	import UI.MyButton;
 	import UI.MyText;
+	import UI.Panel;
 	import UI.TabBar;
 	
 	import data.ChangeData;
@@ -34,19 +35,22 @@ package dialogs
 		
 		/**技能相关*/
 		private var skillSpr:Sprite = new Sprite();
-		private var aotuArr:Array = ["aut1","aut2","aut3","aut4"];
-		private var zhuArr:Array = ["zhu1","zhu2","zhu3","zhu4"];
-		private var xiuArr:Array = ["xiu1","xiu2","xiu3","xiu4"];
-		private var skillStrArr:Array = [aotuArr,zhuArr,xiuArr];
-		private var autoSpr:Sprite = new Sprite();
-		private var zhuSpr:Sprite = new Sprite();
-		private var xiuSpr:Sprite = new Sprite();
-		private var autoSkiArr:Array = new Array();
-		private var zhuSkiArr:Array = new Array();
-		private var xiuSkiArr:Array = new Array();
-		private var skillArr:Array = [autoSkiArr,zhuSkiArr,xiuSkiArr];
+		private var skillArr:Array = new Array();	
+		private var skillListArr:Array =new Array();
+		private var skillPanel:Panel;	
+//		private var aotuArr:Array = ["aut1","aut2","aut3","aut4"];
+//		private var zhuArr:Array = ["zhu1","zhu2","zhu3","zhu4"];
+//		private var xiuArr:Array = ["xiu1","xiu2","xiu3","xiu4"];		
+//		private var skillStrArr:Array = [aotuArr,zhuArr,xiuArr];		
+//		private var autoSpr:Sprite = new Sprite();
+//		private var zhuSpr:Sprite = new Sprite();
+//		private var xiuSpr:Sprite = new Sprite();
+//		private var autoSkiArr:Array = new Array();
+//		private var zhuSkiArr:Array = new Array();
+//		private var xiuSkiArr:Array = new Array();	
 		
-		private var itemArr:Array = [txtSpr,equipSpr,skillSpr];
+		private var itemArr:Array = [txtSpr,equipSpr,skillSpr];		
+		
 		public function PlayerDialog()
 		{
 			init();
@@ -78,7 +82,6 @@ package dialogs
 			createEquip();	
 			addEquip();
 			createSkill();
-			addSkill();
 			
 			var closeBtn:MyButton = new MyButton("X",0xff0000);
 			closeBtn.x = 420;
@@ -99,7 +102,6 @@ package dialogs
 		}
 		//生成属性说明
 		private function createTxt():void{
-
 			var panelArr1:Array = new Array;
 			var panelArr2:Array = new Array;
 			var panelArr3:Array = new Array;
@@ -164,54 +166,27 @@ package dialogs
 				addEqu(DataPool.getArr("user")[0].fabao2);
 			}
 		}
-		//添加技能背景
+		//添加技能容器
+		private var addSkillBtn:MyButton;
 		private function createSkill():void{
-			createText(skillSpr,20,20,"自动技能",0x00EC00);
-			createText(skillSpr,20,200,"主动技能",0x00EC00);
-			createText(skillSpr,20,380,"修炼技能",0x00EC00);
-			
-			for (var i:int = 0;i<aotuArr.length;i++){
-				createAddBg(autoSpr,autoSkiArr,i%2*190+20,int(i/2)*70+25+40,aotuArr[i]);
+			if (!skillPanel){
+				skillPanel= new Panel(400,560);
+				skillPanel.y = 20;
+				skillSpr.addChild(skillPanel);
+				
+				addSkillBtn = new MyButton("<font color = '#ffffff' size='28'>+</font>",ColorInit.btnBgColor,200);
+				addSkillBtn.x = 20;
+				addSkillBtn.addEventListener(MouseEvent.CLICK,addSkiHandler);
+			}	
+			skillPanel.removeContents();
+			skillListArr = [];
+			var skillStr:String = DataPool.getArr("user")[0].skill;
+			skillListArr = skillStr.split(",");
+			for (var i:int = 0;i<skillListArr.length;i++){
+				createAddBg(skillListArr[i],i);
 			}
-			for ( i = 0;i<zhuArr.length;i++){
-				createAddBg(zhuSpr,zhuSkiArr,i%2*190+20,int(i/2)*70+205+40,zhuArr[i]);
-			}
-			for ( i = 0;i<xiuArr.length;i++){
-				createAddBg(xiuSpr,xiuSkiArr,i%2*190+20,int(i/2)*70+385+40,xiuArr[i]);
-			}
-			skillSpr.addChild(autoSpr);
-			skillSpr.addChild(zhuSpr);
-			skillSpr.addChild(xiuSpr);
-			
-		}
-		private function addSkill():void{
-			for (var i:int = 0;i<skillStrArr.length;i++){
-				for (var j:int = 0;j<skillStrArr[i].length;j++){
-//					if(DataPool.getArr("user")[0].skill1>0){
-//						skillid = getSkillid("skill1");
-//						addSki(DataPool.getArr("user")[0].skill1);
-//					}
-					for(var property:String in DataPool.getArr("user")[0]){
-						if (property == skillStrArr[i][j]&&DataPool.getArr("user")[0][property]!="0"){
-							skillid = j;
-							addSki(DataPool.getArr("user")[0][property],-1,i);
-						}
-					}
-				}
-			}
-			
-//			if(DataPool.getArr("user")[0].skill2>0){
-//				skillid = getSkillid("skill2");
-//				addSki(DataPool.getArr("user")[0].skill2);
-//			}
-//			if(DataPool.getArr("user")[0].skill3>0){
-//				skillid = getSkillid("skill3");
-//				addSki(DataPool.getArr("user")[0].skill3);
-//			}
-//			if(DataPool.getArr("user")[0].skill4>0){
-//				skillid = getSkillid("skill4");
-//				addSki(DataPool.getArr("user")[0].skill4);
-//			}
+
+			skillPanel.addContent(addSkillBtn,20);			
 		}
 		override public function theOpen():void{
 			this.visible = true;
@@ -327,137 +302,60 @@ package dialogs
 				var xx:Object = {id:tmid,num:1};
 				//SqlDb.insert("bag",{id:tmid,num:1});	
 				//DataPool.getArr("bag").push(xx);	
-				RefreshData.unload("user",gettypename(tpid),"0",gettypename(tpid),tmid.toString());
+				RefreshData.unload("equip",gettypename(tpid),"0",gettypename(tpid),tmid.toString());
 			}
 			Refresh();
 		}
-		///////////////////////////////////////////////////////////////////////////////////////
+		/**技能相关///////////////////////////////////////////////////////////////////////////*/
 		
-		private var skillid:int = 0;
-		private var skillname:String = "";
-		private var skilltype:int = 0;
-		//添加技能栏
-		private function createAddBg(ts:Sprite,tArr:Array,x:int,y:int,name:String):void{
+		private var skillNum:int = 0;
+		//添加一个技能
+		private function createAddBg(skillid,skillnum:int):void{
+			if(skillid=="")return;
 			var tspr:Sprite = new Sprite();
-			tspr.x = x;
-			tspr.y = y;
-			tspr.name = name;
 			tspr.graphics.beginFill(0Xcc4477);
-			tspr.graphics.drawRect(0,0,GameInit.m_equidwidth+4,GameInit.m_equidheight+4);	
+			tspr.graphics.drawRect(0,0,360,50);	
 			
-			var tf:MyText = new MyText("+",36,0x00cc00,"center");
-			tf.x = (GameInit.m_equidwidth-100)/2;
-			tspr.addChild(tf);
-			tspr.addEventListener(MouseEvent.CLICK,addSkiHandler);
-			ts.addChild(tspr);
+			var tdata:Object = DataPool.getSel("skill",skillid);
+			tdata.nowlevel = DataPool.getSel("userskill",skillid).nowlevel;
+			var tbx:EquipBox = new EquipBox(tdata,1);	
+			tspr.addChild(tbx);	
+			//添加技能到技能里列表
+			PlayerInit.p_skillArr.push(tdata);
 			
-			var tsp:Sprite = new Sprite();
-			tsp.x = x;
-			tsp.y = y;
-			tsp.name = name;
-			tsp.addEventListener(MouseEvent.CLICK,setSkiHandler);
-			ts.addChild(tsp);
-			tArr.push(tsp);
+			var jianBtn:MyButton = new MyButton("X",0xff0000);
+			jianBtn.x = 310;			
+			jianBtn.name = skillnum.toString();			
+			jianBtn.addEventListener(MouseEvent.CLICK,removeSkiHandler);
+			tspr.addChild(jianBtn);	
+			tspr.x = 20;
+			skillPanel.addContent(tspr,10);
 		}
 		//点击+号按钮
 		private function addSkiHandler(e:MouseEvent):void{
 			//trace (e.currentTarget.name);
-			alone.skilldialog.setTitle("zb");
-			var tname:String = e.currentTarget.name;
-			skillname = tname;
-			skillid = getSkillid(tname);
-			skilltype = getSkillType(tname);
+			alone.skilldialog.setTitle("zb");			
 		}
-		//点击添加技能
-		private function setSkiHandler(e:MouseEvent):void{
-			var tname:String = e.currentTarget.name;
-			skillname = tname;
-			skillid = getSkillid(tname);
-			skilltype = getSkillType(tname);
-		}
-		private function getSkillid(str:String):int{
-			var tid:int = 0;
-			return int(str.slice(3))-1;
-		}
-		private function getSkillType(str:String):int{
-			var ttype:int = 0;
-			switch(str.slice(0,3)){
-				case "aut":
-					ttype = 0;
-					break;
-				case "zhu":
-					ttype = 1;
-					break;
-				case "xiu":
-					ttype = 2;
-					break;
-			}
-			return ttype;
-		}
-
-		//添加更换技能
-		public function addSki(id:int,tpid:int = -1,tnum:int = 0):void{
-			if (tpid==-1){
-				tpid = skillid;				
-			}else{				
-				tnum = skilltype;
-				if (skillArr[tnum][0].numChildren == 0){
-					tpid = skillid;	
-				}else if (skillArr[tnum][1].numChildren == 0){
-					tpid = skillid;	
-				}else if (skillArr[tnum][2].numChildren == 0){
-					tpid = skillid;	
-				}else if (skillArr[tnum][3].numChildren == 0){
-					tpid = skillid;	
-				}else {
-					tpid=int(Math.random()*4);
-					removeSki(tpid);
-				}
-				RefreshData.puton("skill",skillname,id.toString(),skillname,id.toString());
-			}
-			//DataPool.getArr("userskill")[id].using = ++tnum;
-			refreshSkill(id,tnum+1);
-			//获取技能等级
-			var tdata:Object = DataPool.getSel("skill",id);
-			tdata.nowlevel = DataPool.getSel("userskill",id).nowlevel;
-			var tbx:EquipBox = new EquipBox(tdata);			
-			skillArr[tnum][tpid].addChild(tbx);
-			Refresh();
-		}
-		//更新技能状态
-		private function refreshSkill(id:int,tnum:int):void{
-			var arr:Array = DataPool.getArr("userskill");
-			if(arr){
-				var len:int = arr.length;
-				for (var i:int = 0;i<len;i++){
-					if(arr[i].id == id){
-						arr[i].useing = tnum;
-						//saveSkill("useing",tnum.toString(),"id",id.toString());
+		//点击X号按钮
+		private function removeSkiHandler(e:MouseEvent):void{
+			skillNum = int(e.currentTarget.name);
+			var temStr:String = "";
+			for (var i:int = 0;i<skillListArr.length;i++){
+				if (i!=skillNum){
+					temStr += skillListArr[i];
+					if(i<skillListArr.length-1){
+						temStr += ",";
 					}
 				}
 			}
+			RefreshData.unload("skill","skill",temStr,"skill",temStr);
 		}
-		//移除技能
-		public function removeSki(tnum:int,tpid:int = -1,tnum:int = 0):void{
-			if (tpid==-1){
-				tpid = skillid;
-			}
-			tnum = skilltype;
-			while(skillArr[tnum][tpid].numChildren>0){
-				var tmid:int = skillArr[tnum][tpid].getChildAt(0).edata.id;
-				var tmlevel:int = skillArr[tnum][tpid].getChildAt(0).edata.level;
-				var tmexp:int = skillArr[tnum][tpid].getChildAt(0).edata.exp;
-				skillArr[tnum][tpid].removeChildAt(0);
-				//refreshSkill(tmid,++tnum);
-				//saveSkill("useing",tnum.toString(),"id",tmid.toString());
-				//var xx:Object = {id:tmid,num:1}
-				/**添加移除技能，不改变技能列表，只更新技能状态。*/
-				//SqlDb.insert("userskill",{id:tmid,level:tmlevel,exp:tmexp});
-				//DataPool.getArr("bag").push(xx);	
-				RefreshData.unload("userskill",skillname,"0",skillname,tmid.toString());
-			}
-			Refresh();
+
+		//添加更换技能
+		public function addSki(id:int):void{			
+			RefreshData.puton("skill","skill",DataPool.getArr("user")[0]["skill"]+","+id,"skill",DataPool.getArr("user")[0]["skill"]+","+id);
 		}
+		
 		//关闭面板
 		private function closeHandler(e:MouseEvent):void{
 			this.theDest();
@@ -465,6 +363,8 @@ package dialogs
 		
 		//刷新属性
 		public function Refresh():void{
+			//刷新显示技能
+			createSkill();
 			//初始化基础属性
 			PlayerInit.init();
 			//添加修炼技能属性
@@ -511,16 +411,16 @@ package dialogs
 				PlayerInit.p_skillArr.shift();
 			}
 			PlayerInit.p_skillArr = [];
-			for(var tnum:int = 0;tnum<autoSkiArr.length;tnum++){
-				//for(i = 0;i<skillArr[tnum].length;i++){
-					if(autoSkiArr[tnum].numChildren>0){
-						PlayerInit.p_skillArr.push(autoSkiArr[tnum].getChildAt(0).edata);
-						//save(getSkillname(i),temSkiSpr[i].getChildAt(0).edata.id.toString());
-					}else{
-						//save(getSkillname(i),"0");
-					}
-				//}
-			}
+//			for(var tnum:int = 0;tnum<autoSkiArr.length;tnum++){
+//				//for(i = 0;i<skillArr[tnum].length;i++){
+//					if(autoSkiArr[tnum].numChildren>0){
+//						PlayerInit.p_skillArr.push(autoSkiArr[tnum].getChildAt(0).edata);
+//						//save(getSkillname(i),temSkiSpr[i].getChildAt(0).edata.id.toString());
+//					}else{
+//						//save(getSkillname(i),"0");
+//					}
+//				//}
+//			}
 		}
 		//写入数值
 		private function setText(str:String):void{

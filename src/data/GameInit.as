@@ -4,8 +4,8 @@ package data
 
 	public class GameInit
 	{
-		public static var m_equidwidth:int = 164;
-		public static var m_equidheight:int = 44;
+		public static var m_equidwidth:int = 166;
+		public static var m_equidheight:int = 46;
 		public static var m_stage:Stage;
 		public static var tipArr:Array = new Array;
 		public static var levelArr:Array = [0xffffff,0x00DB00,0x0000E3,0xbc02bc,0xF9F900];
@@ -20,7 +20,7 @@ package data
 		public static var FITERDELAY:int = 50;
 		public static const ISRELESE:Boolean = false;
 		
-		private static const LOCALURL:String = "http://192.168.0.217/";
+		private static const LOCALURL:String = "http://127.0.0.1/";
 		private static const SERVERURL:String = "http://tayee.sinaapp.com/";
 		/**登陆*/
 		private static const LOGINURL:String = "login.php";	

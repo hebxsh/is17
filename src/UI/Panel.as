@@ -62,7 +62,7 @@
 		}
 		/**
 		 * 添加内容
-		 * @param obj
+		 * @param obj 间隔
 		 */
 		public function addContent(obj:DisplayObject,spacing:int = 0):void
 		{

@@ -61,7 +61,7 @@ package dialogs
 		}
 		private function zbHandler(e:MouseEvent):void{
 			if (SkillDialog.useType == "zb"){
-				alone.playerdialog.addSki(int(e.currentTarget.obj.id),int(e.currentTarget.obj.type)-1);	
+				alone.playerdialog.addSki(int(e.currentTarget.obj.id));	
 			}else if(SkillDialog.useType == "xl"){
 				alone.xiuliandialog.addSki(int(e.currentTarget.obj.id));	
 			}

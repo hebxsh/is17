@@ -42,15 +42,15 @@
 			break;
 		case "unloa"://取下装备或者技能
 			$arr = json_decode($sqldata, true);
-			if($tablename=="user"){
+			if($tablename=="equip"){
 				$tstr = "UPDATE user SET ".$arr[0]['type']."='".$arr[0]['show']."'"; //. " WHERE " . $arr[0]['typeName']."='".$arr[0]['nameShow']."';";
 				$query =  mysqli_query($link,$tstr); 
 				$tstr = "insert into bag (id,num) values (".$arr[0]['nameShow'].",1)";
-			}else if($tablename=="userskill"){
+			}else if($tablename=="skill"){
 				$tstr = "UPDATE user SET ".$arr[0]['type']."='".$arr[0]['show']."'";// . " WHERE " . $arr[0]['typeName']."='".$arr[0]['nameShow']."'";	
 				//echo $tstr;
-				$query =  mysqli_query($link,$tstr); 
-				$tstr = "UPDATE userskill SET useing = 0 where id='".$arr[0]['nameShow']."'";				
+				//$query =  mysqli_query($link,$tstr); 
+				//$tstr = "UPDATE userskill SET useing = 0 where id='".$arr[0]['nameShow']."'";				
 			}//echo($tstr);
 			$query = mysqli_query($link,$tstr); 
 			break;
@@ -82,8 +82,8 @@
 					$query =  mysqli_query($link,$tstr); 	
 				}
 				$tstr = "UPDATE user SET ".$arr[0]['type']."='".$arr[0]['show']."'" ;//. " WHERE " . $arr[0]['typeName']."='".$arr[0]['nameShow']."';";
-				$query =  mysqli_query($link,$tstr);//给玩家装备上该物品 		
-				$tstr = "UPDATE userskill SET useing = 1 where id='".$arr[0]['show']."'";//从背包干掉该物品			
+				$query =  mysqli_query($link,$tstr);//装备上技能
+				$tstr = "UPDATE userskill SET useing = 1 where id='".$arr[0]['show']."'";//重置技能属性		
 			}//echo($tstr);
 			$query = mysqli_query($link,$tstr); 
 			break;

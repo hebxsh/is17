@@ -8,14 +8,14 @@ package UI
 	{
 		private var m_obj:Object;
 		private var m_mobj:Object;
-		private var m_tf:MyText
+		public var m_tf:MyText;
 		public function MyButton(label:String,color:uint = ColorInit.btnBgColor,width:int = 50,height:int = 50)
 		{
 			this.graphics.beginFill(color);
 			this.graphics.drawRect(0,0,width,height);	
 
 			m_tf = new MyText(label,20,ColorInit.btnTxtColor,"center",width);
-			m_tf.y = 10;
+			m_tf.y = (height-m_tf.height)>>1;
 			this.addChild(m_tf);
 		}
 

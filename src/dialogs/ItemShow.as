@@ -122,7 +122,7 @@ package dialogs
 			alone.playerdialog.removeEqu();
 		}
 		private function remSkiHandler(e:MouseEvent):void{
-			alone.playerdialog.removeSki(0);
+			//alone.playerdialog.removeSki(0);
 		}
 		private function cloHandler(e:MouseEvent):void{
 			alone.topSpr.removeChildAt(0);

@@ -65,11 +65,13 @@ package data
 		}
 		//刷新数据
 		private static function loaddataHandler(e:CommEvent = null):void{
-			LoadData.RefreshData(r_tablestr);
+			//LoadData.RefreshData(r_tablestr);
 			if (r_tablestr=="user"){
 				LoadData.RefreshData("bag");
-			}if (r_tablestr=="userskill"){
+			}else if (r_tablestr=="userskill"){
 				LoadData.RefreshData("userskill");
+			}else if (r_tablestr=="skill"){
+				LoadData.RefreshData("user");
 			}
 		}
 		
