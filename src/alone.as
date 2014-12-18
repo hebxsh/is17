@@ -15,6 +15,7 @@ package
 	import dialogs.BagDialog;
 	import dialogs.BottomUI;
 	import dialogs.CustomDialog;
+	import dialogs.DazaoDialog;
 	import dialogs.LoadData;
 	import dialogs.MazeDialog;
 	import dialogs.PlayerDialog;
@@ -40,6 +41,7 @@ package
 		public static var bagdialog:BagDialog;
 		public static var skilldialog:SkillDialog;
 		public static var customdialog:CustomDialog;
+		public static var dazaodialog:DazaoDialog;
 		public static var mazedialog:MazeDialog;
 		public static var fightlayer:FightLayer;
 		public static var xiuliandialog:XiulianDialog;
@@ -83,6 +85,7 @@ package
 			this.addChild(loaddata);
 		}
 		private function init(e:CommEvent = null):void{	
+			
 			//GameInit.m_stage = stage;
 			var bili:Number = stage.fullScreenWidth/480;
 			
@@ -112,6 +115,10 @@ package
 			if (!xiuliandialog)
 				xiuliandialog = new XiulianDialog;
 			this.addChild(xiuliandialog);	
+			//打造面板
+			if (!dazaodialog)
+				dazaodialog = new DazaoDialog;
+			this.addChild(dazaodialog);
 			//背包面板
 			if (!bagdialog)
 				bagdialog = new BagDialog;
@@ -123,7 +130,7 @@ package
 			//关卡面板
 			if (!customdialog)
 				customdialog = new CustomDialog;
-			this.addChild(customdialog);
+			this.addChild(customdialog);			
 			//战斗场景
 			if (!fightlayer)
 				fightlayer = new FightLayer;			

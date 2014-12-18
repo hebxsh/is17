@@ -9,7 +9,6 @@ package dialogs
 	
 	import data.DataPool;
 	import data.RefreshData;
-	import data.SqlDb;
 
 	public class BagItem extends Sprite
 	{
@@ -41,7 +40,9 @@ package dialogs
 				dq.addEventListener(MouseEvent.CLICK,dqHandler);
 			}
 			var showTxt:String = "装备";
-			if (int(temObj.id)>40000&&int(temObj.id)<50000){
+			if (int(temObj.id)>30000&&int(temObj.id)<40000){
+				showTxt = "打造";
+			}else if (int(temObj.id)>40000&&int(temObj.id)<50000){
 				if(temObj.type == "4"){
 					showTxt = "阅读";
 				}else{
@@ -73,8 +74,11 @@ package dialogs
 				DataPool.getArr("bag").splice(int(e.currentTarget.name),1);
 				delet(int(e.currentTarget.mobj.mainid));
 				alone.bagdialog.closeHandler();
-			}else if(int(e.currentTarget.obj.id)<40000){
+			}else if(int(e.currentTarget.obj.id)<30000){
 				RefreshData.inser("userskill",e.currentTarget.obj.id);
+				alone.bagdialog.closeHandler();
+			}else if(int(e.currentTarget.obj.id)<40000){
+				alone.dazaodialog.addCailiao(int(e.currentTarget.obj.id));
 				alone.bagdialog.closeHandler();
 			}else if(int(e.currentTarget.obj.id)<50000){
 				if(e.currentTarget.obj.type=="4"){

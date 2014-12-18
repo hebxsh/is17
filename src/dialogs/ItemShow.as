@@ -6,7 +6,6 @@ package dialogs
 	import UI.MyButton;
 	import UI.MyText;
 	
-	import data.ColorInit;
 	import data.DataPool;
 	import data.GameInit;
 	import data.PlayerInit;
@@ -45,20 +44,40 @@ package dialogs
 				}
 			}else if(int(tdata.id)<30000){
 				//tstr += "<font color='"+GameInit.getHtmlColor(tdata.level)+"'>"+tdata.name+"</font>\n\n";
+				var killNum:int;
 				switch(tdata.type){
 					case "1":
 						tstr += "类型： 攻击技能\n\n";
+						tstr += "作用目标："+tdata.targetnum+"\n";
 						if(int(tdata.huihe)>1)tstr += "持续回合："+tdata.huihe+"\n";
 						tstr += "对目标造成"+int((PlayerInit.gongji*(tdata.baiji+tdata.baixi*tdata.nowlevel)/100+(tdata.guji+tdata.guxi*tdata.nowlevel)+tdata.xiuzheng))+"伤害\n";
 						break;
 					case "2":
 						tstr += "类型： 恢复技能\n\n";
+						if(int(tdata.huihe)>1)tstr += "持续回合："+tdata.huihe+"\n";
+						tstr += "获得"+ int(PlayerInit.lingli*(int(tdata.baiji)+int(tdata.baixi)*int(tdata.nowlevel))/100+int(tdata.guji)+int(tdata.guxi)*int(tdata.nowlevel)+int(tdata.xiuzheng))+"治疗\n";
 						break;
 					case "3":
 						tstr += "类型： 状态技能\n\n";
+						tstr += "作用目标："+tdata.targetnum+"\n";
+						if(int(tdata.huihe)>1)tstr += "持续回合："+tdata.huihe+"\n";
+						for (var k:int=0;k<GameInit.wxsxArr.length;k++){
+							killNum = getFaSkillHert(tdata,GameInit.wxsxArr[k]);	
+							if(killNum>0)tstr +="对目标造成</font><font color='#ff0000'>"+killNum+"</font>"+GameInit.getSxName(GameInit.wxsxArr[k])+"属性伤害\n";
+						}
+						for (var j:int=0;j<GameInit.gfsxArr.length;j++){
+							var delNum:int = getDefSkillHert(tdata,GameInit.gfsxArr[j]);	
+							if(delNum>0)tstr +="减少目标<font color='#ff0000'>"+delNum+"</font>"+GameInit.getSxName(GameInit.gfsxArr[j])+"\n";
+						}
 						break;
 					case "4":
 						tstr += "类型： 法术技能\n\n";
+						tstr += "作用目标："+tdata.targetnum+"\n";
+						if(int(tdata.huihe)>1)tstr += "持续回合："+tdata.huihe+"\n";
+						for (var l:int=0;l<GameInit.wxsxArr.length;l++){
+							killNum = getFaSkillHert(tdata,GameInit.wxsxArr[l]);	
+							if(killNum>0)tstr +="对目标造成</font><font color='#ff0000'>"+killNum+"</font>"+GameInit.getSxName(GameInit.wxsxArr[l])+"属性伤害\n";
+						}
 						break;
 					case "7":
 						tstr += "类型： 生产技能\n\n";
@@ -95,7 +114,7 @@ package dialogs
 				if(tdata.skill!="0"){
 					var temArr:Array = (tdata.skill as String).split(',');
 					if(temArr){
-						for (var j:int = 0;j<temArr.length;j++){
+						for ( j = 0;j<temArr.length;j++){
 							var tlArr:Array = temArr[j].split("&");
 							var temSkill:Object =  DataPool.getSel("skill",tlArr[0]);
 							tstr += "<font color='"+GameInit.getHtmlColor(temSkill.level)+"'>"+temSkill.name+"</font>("+tlArr[1]+")\n";
@@ -117,6 +136,20 @@ package dialogs
 			tf.y = 50;
 			this.addChild(tf);
 			this.addEventListener(MouseEvent.CLICK,cloHandler);			
+		}
+		//计算debuff属性压制
+		private function getDefSkillHert(skill:Object,nam:String):int{
+			var hertnum:int = 0;		
+			if(skill[nam]>0)
+				hertnum = int(skill[nam]*(int(skill.baiji)+int(skill.baixi)*int(skill.nowlevel))/100+int(skill.guji)+int(skill.guxi)*int(skill.nowlevel)+int(skill.xiuzheng));
+			return hertnum;
+		}
+		//计算法术技能伤害
+		private function getFaSkillHert(skill:Object,nam:String):int{
+			var hertnum:int = 0;
+			if(skill[nam]>0)
+				hertnum = int((PlayerInit.getSx(nam)+PlayerInit.lingli)*(int(skill.baiji)+int(skill.baixi)*int(skill.nowlevel))/100+int(skill.guji)+int(skill.guxi)*int(skill.nowlevel)+int(skill.xiuzheng));
+			return hertnum;
 		}
 		private function remEquHandler(e:MouseEvent):void{
 			alone.playerdialog.removeEqu();

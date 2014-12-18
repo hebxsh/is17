@@ -11,18 +11,14 @@ package scene
 	import UI.Panel;
 	import UI.ToolTip;
 	
-	import data.ChangeData;
 	import data.ColorInit;
 	import data.DataInit;
-	import data.DataPool;
 	import data.GameInit;
 	import data.Monster;
 	import data.PlayerInit;
 	import data.Reward;
-	import data.SqlDb;
 	
 	import dialogs.DialogObject;
-	import dialogs.UserLogin;
 	
 	import event.CommEvent;
 
@@ -50,6 +46,8 @@ package scene
 		private var arrErArr:Array = new Array();
 		//判断是否战斗结束
 		private var isOver:Boolean = false;
+		//是否过图成功
+		private var isSuccess:Boolean = false;
 		
 		public function FightLayer()
 		{
@@ -130,6 +128,7 @@ package scene
 				}
 			}else{
 				dotHert(item);
+				if(!item.p_die)
 				killPlayer(item);
 			}
 			
@@ -142,6 +141,8 @@ package scene
 		private function timerHandler(e:TimerEvent):void{
 			getAction();
 		}
+		private var skillNum:int = 0;
+		private var success:Boolean = true;
 		//玩家使用技能攻击怪物
 		private function userSkill():void{
 			//取出活的开砍
@@ -153,10 +154,14 @@ package scene
 			}
 			
 			//玩家使用技能攻击怪物
-			if (PlayerInit.p_skillArr.length>0&&Math.random()>0){
+			if (PlayerInit.p_skillArr.length>0/*&&Math.random()>0*/){
 				//如果释放技能，取得一个随机技能
-				var rsk:int = int(Math.random()*PlayerInit.p_skillArr.length);
-				var skill:Object = DataInit.getCopy(getSkill(rsk));
+				//var rsk:int = int(Math.random()*PlayerInit.p_skillArr.length);
+				if(skillNum==PlayerInit.p_skillArr.length)skillNum=0;
+				var skill:Object = DataInit.getCopy(getSkill(skillNum));
+				trace (skillNum,skill.type);
+				skillNum++;
+				
 				//循环个数
 				for (i = 0;i<skill.targetnum;i++){
 					//取出一个活的
@@ -201,11 +206,26 @@ package scene
 								killMonster(monster);
 							}
 							break;
-						case "5":
+						case "5":						
+							
+							if( Math.random()*100>(int(skill.jilv)+int(skill.jixi)*int(skill.nowlevel))){
+								success = false;
+							}else{
+								success = true;
+							}
+							if(success){
+								killNum = getBaiSkillHert(skill,monster);
+								if (killNum<0)killNum=0;
+								if(monster.hp<=0)break;
+								if(killNum>0)showStr +="你使用"+"<font color='"+GameInit.getHtmlColor(int(skill.level))+"'>"+skill.name+"</font>对<font color='#003fe0'>"+monster.name+"</font>造成了<font color='#ff0000'>"+killNum+"</font>伤害\n";
+								killMonster(monster);
+							}else{								
+								showStr += "释放<font color='"+GameInit.getHtmlColor(int(skill.level))+"'>"+skill.name+"</font>失败！";
+							}
 							break;
 					}
 					//如果是dot技能	
-					if (int(skill.huihe)>1){
+					if (int(skill.huihe)>1&&success){
 						skill.huihe = int(skill.huihe)-1;
 						if (selDot(monster,int(skill.id),int(skill.huihe))){
 							monster.p_dotArr.push(skill);
@@ -247,7 +267,7 @@ package scene
 							killMonster(monster);
 							break;
 						case "2":
-							killNum = int(PlayerInit.gongji*temSkill.percentage/100);
+							killNum = int(PlayerInit.lingli*(int(temSkill.baiji)+int(temSkill.baixi)*int(temSkill.nowlevel))/100+int(temSkill.guji)+int(temSkill.guxi)*int(temSkill.nowlevel)+int(temSkill.xiuzheng));
 							if (PlayerInit.hp + killNum>PlayerInit.maxhp)PlayerInit.hp = PlayerInit.maxhp;
 							showStr +="你使用"+"<font color='"+GameInit.getHtmlColor(int(temSkill.level))+"'>"+temSkill.name+"</font><font color='#003fe0'></font>获得了<font color='#ff0000'>"+killNum+"</font>治疗\n";
 							break;
@@ -270,14 +290,19 @@ package scene
 							}
 							break;
 						case "5":
+							killNum = getBaiSkillHert(temSkill,monster);
+							if (killNum<0)killNum=0;
+							if(monster.hp<=0)break;
+							if(killNum>0)showStr += "<font color='#003fe0'>"+monster.name+"</font>受到了"+"<font color='"+GameInit.getHtmlColor(int(temSkill.level))+"'>"+temSkill.name+"</font><font color='#003fe0'>"+killNum+"伤害\n";
+							killMonster(monster);
+							
 							break;
 					}
 					
 					if (temSkill.huihe<=0){
 						if (temSkill.type == 3){
 						}						
-						monster.p_dotArr.splice(monster.p_dotArr.indexOf(temSkill),1);
-						
+						monster.p_dotArr.splice(monster.p_dotArr.indexOf(temSkill),1);						
 					}
 				}
 			}
@@ -302,6 +327,19 @@ package scene
 			hertnum = int((PlayerInit.getSx(nam)+PlayerInit.lingli)*(int(skill.baiji)+int(skill.baixi)*int(skill.nowlevel))/100+int(skill.guji)+int(skill.guxi)*int(skill.nowlevel)+int(skill.xiuzheng))-mon.lingli-mon.getSx(nam);
 			return hertnum;
 		}
+		//计百分比技能伤害
+		private function getBaiSkillHert(skill:Object,mon:Monster):int{
+			var hertnum:int = 0;
+			//trace (typeof(skill.xiuzheng),mon.hp,mon.maxhp);
+			
+			if (skill.xiuzheng=="0"){
+				hertnum = int((int(skill.baiji)+int(skill.baixi)*int(skill.nowlevel))/100*mon.hp);
+			}else{
+				hertnum = int((int(skill.baiji)+int(skill.baixi)*int(skill.nowlevel))/100*mon.maxhp);
+			}
+		
+			return hertnum;
+		}
 		//怪物扣血，是否杀死怪物
 		private function killMonster(mon:Monster):void{
 			mon.hp-=killNum;			
@@ -322,6 +360,8 @@ package scene
 				if(allKill){
 					//获取奖励  杀死所有怪物获取
 					isOver = true;
+					isSuccess = true;
+					fightOver();
 					queBtn.visible = true;
 					Reward.getitem(m_level);
 					timer.removeEventListener(TimerEvent.TIMER,timerHandler);
@@ -396,9 +436,14 @@ package scene
 		}
 		private function die():void{
 			isOver = true;
+			isSuccess = false;
+			fightOver();
 			queBtn.visible = true;
 			timer.removeEventListener(TimerEvent.TIMER,timerHandler);
 			PlayerInit.p_status = 1;
+		}
+		private function fightOver():void{
+			alone.maplayer.fightOver(isSuccess);
 		}
 	}
 }

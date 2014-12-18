@@ -38,16 +38,6 @@ package dialogs
 		private var skillArr:Array = new Array();	
 		private var skillListArr:Array =new Array();
 		private var skillPanel:Panel;	
-//		private var aotuArr:Array = ["aut1","aut2","aut3","aut4"];
-//		private var zhuArr:Array = ["zhu1","zhu2","zhu3","zhu4"];
-//		private var xiuArr:Array = ["xiu1","xiu2","xiu3","xiu4"];		
-//		private var skillStrArr:Array = [aotuArr,zhuArr,xiuArr];		
-//		private var autoSpr:Sprite = new Sprite();
-//		private var zhuSpr:Sprite = new Sprite();
-//		private var xiuSpr:Sprite = new Sprite();
-//		private var autoSkiArr:Array = new Array();
-//		private var zhuSkiArr:Array = new Array();
-//		private var xiuSkiArr:Array = new Array();	
 		
 		private var itemArr:Array = [txtSpr,equipSpr,skillSpr];		
 		
@@ -181,12 +171,18 @@ package dialogs
 			skillPanel.removeContents();
 			skillListArr = [];
 			var skillStr:String = DataPool.getArr("user")[0].skill;
-			skillListArr = skillStr.split(",");
+			if(skillStr)skillListArr = skillStr.split(",");
+			
+			//清空技能列表。
+			while(PlayerInit.p_skillArr.length>0){
+				PlayerInit.p_skillArr.shift();
+			}
+			PlayerInit.p_skillArr = [];
+			
 			for (var i:int = 0;i<skillListArr.length;i++){
 				createAddBg(skillListArr[i],i);
 			}
-
-			skillPanel.addContent(addSkillBtn,20);			
+			skillPanel.addContent(addSkillBtn,20);
 		}
 		override public function theOpen():void{
 			this.visible = true;
@@ -289,7 +285,7 @@ package dialogs
 			}			
 			var tbx:EquipBox = new EquipBox(DataPool.getSel("equip",id));
 			temEquSpr[tpid].addChild(tbx);
-			Refresh();			
+			//Refresh();			
 		}
 		//移除装备
 		public function removeEqu(tpid:int = -1):void{
@@ -304,7 +300,7 @@ package dialogs
 				//DataPool.getArr("bag").push(xx);	
 				RefreshData.unload("equip",gettypename(tpid),"0",gettypename(tpid),tmid.toString());
 			}
-			Refresh();
+			//Refresh();
 		}
 		/**技能相关///////////////////////////////////////////////////////////////////////////*/
 		
@@ -405,22 +401,6 @@ package dialogs
 			for (i = 0;i<m_sxArr.length;i++){
 				m_sxArr[i][1].setText(PlayerInit.getSx(m_sxArr[i][0]));
 			}
-
-			//将自动释放的技能写入释放技能列表
-			while(PlayerInit.p_skillArr.length>0){
-				PlayerInit.p_skillArr.shift();
-			}
-			PlayerInit.p_skillArr = [];
-//			for(var tnum:int = 0;tnum<autoSkiArr.length;tnum++){
-//				//for(i = 0;i<skillArr[tnum].length;i++){
-//					if(autoSkiArr[tnum].numChildren>0){
-//						PlayerInit.p_skillArr.push(autoSkiArr[tnum].getChildAt(0).edata);
-//						//save(getSkillname(i),temSkiSpr[i].getChildAt(0).edata.id.toString());
-//					}else{
-//						//save(getSkillname(i),"0");
-//					}
-//				//}
-//			}
 		}
 		//写入数值
 		private function setText(str:String):void{

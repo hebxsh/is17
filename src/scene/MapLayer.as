@@ -2,6 +2,7 @@ package scene
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.filters.GlowFilter;
 	
 	import UI.MapBox;
 	import UI.MyButton;
@@ -15,8 +16,7 @@ package scene
 	import data.PlayerInit;
 	
 	import dialogs.DialogObject;
-	
-	import event.CommEvent;
+
 
 	public class MapLayer extends DialogObject
 	{
@@ -43,6 +43,8 @@ package scene
 			if(!mapSpr){
 				mapSpr = new Sprite;				
 				this.addChild(mapSpr);
+				mapSpr.addEventListener(MouseEvent.MOUSE_DOWN,tdHandler);
+				mapSpr.addEventListener(MouseEvent.MOUSE_UP,tuHandler);
 			}
 			if(!resetBtn){
 				resetBtn = new MyButton("下一关",0xccaa77,80);
@@ -56,6 +58,7 @@ package scene
 				titleTxt = new MyText(DataPool.getArr("mountain")[m_level].name);
 				titleTxt.x = (GameInit.m_stage.stageWidth-titleTxt.width)>>1;
 				titleTxt.y = titleTxt.height*2;
+				titleTxt.filters = [new GlowFilter(0xffffff, 1.0, 2.0, 2.0, 10, 1, false, false)];
 				this.addChild(titleTxt);
 			}
 			titleTxt.setText(DataPool.getArr("mountain")[m_level].name);
@@ -68,7 +71,7 @@ package scene
 			for (var i:int = 0;i<hang;i++){
 				mapArr.push(new Array());
 				for (var j:int = 0;j<lie;j++){
-					var tbox:MapBox = new MapBox(temArr[i][j].type,temArr[i][j].ground,temArr[i][j].level);
+					var tbox:MapBox = new MapBox(0,temArr[i][j].type,temArr[i][j].ground,temArr[i][j].level);
 					tbox.x = j*(tbox.width+2);
 					tbox.y = i*(tbox.width+2);
 					tbox.thang = j;
@@ -83,67 +86,112 @@ package scene
 			while (rp){
 				var tx:int = Math.random()*hang;
 				var ty:int = Math.random()*lie;
-				if (temArr[tx][ty].level == 0){
-					mapArr[tx][ty].maskAlpha();	
+				if (temArr[tx][ty].ground == 3){
+					mapArr[tx][ty].maskAlpha();
+					mapSpr.x = int((GameInit.m_stage.stageWidth - GameInit.m_mapwidth-6)/2-(GameInit.m_mapwidth+6)*ty);
+					mapSpr.y = int((GameInit.m_stage.stageHeight - GameInit.m_mapheight-6)/2-(GameInit.m_mapheight+6)*tx);
 					rp = false;
 				}
-			}
-			mapSpr.x = int((GameInit.m_stage.stageWidth-mapSpr.width)/2);
-			mapSpr.y = int((GameInit.m_stage.stageHeight-mapSpr.height)/2);
+			}			
 		}
 		//点击事件
+		private var selBox:MapBox;
 		private function tcHandler(e:MouseEvent):void{
-			var tb:MapBox = e.currentTarget as MapBox;
-			if (tb.fight){
-				fighting(tb,tb.type,tb.level);				
-			}else{				
-				if (tb.getalpha > 0){
-					explore(tb,1);					
-				}else{
+			selBox = e.currentTarget as MapBox;
+			if (selBox.fight){
+				fighting(selBox,selBox.type,selBox.level);
+			}else{
+				if (selBox.getalpha == .6){
+					explore(selBox,1);
+					//tb.setStatus(int(tb.level/2)+1);
+				}else if(selBox.getalpha == 0){
 					//无反应
 				}
 			}
 		}
+		//按下事件
+		private function tdHandler(e:MouseEvent):void{
+			mapSpr.startDrag();
+		}
+		//弹起事件
+		private function tuHandler(e:MouseEvent):void{
+			mapSpr.stopDrag();
+		}
 		//战斗
+		private var m_mbox:MapBox;
+		private var m_elevel:int;
 		private function fighting(tb:MapBox,etyp:int,elev:int):void{
 			var fight:Fight = new Fight();
 			fight.fighting(etyp,elev);
 			//PlayerInit.p_hp-=(elev+1);			
 			alone.upui.Refresh();
-			if (PlayerInit.p_status == 1){
-				var e:CommEvent = new CommEvent(CommEvent.GAMEOVER);
-				dispatchEvent(e);
-				this.gameOver();
-			}else{
-				
-				if (elev == 4){
-					m_level++;
-					PlayerInit.p_custom++;
-					resetBtn.visible = true;
-				}
-				//展开其他相关地图
-				var th:int = tb.tlie;
-				var tl:int = tb.thang;	
-				tb.visible = false;
-				for (var i:int = 0;i<hang;i++){
-					for (var j:int = 0;j<lie;j++){
-						if (i-th<=view&&i-th>0||th-i<=view&&th-i>0){
-							mapArr[i][tl].maskAlpha();
-						}
-						if (j-tl<=view&&j-tl>0||tl-j<=view&&tl-j>0){
-							mapArr[th][j].maskAlpha();
-						}
+			
+			m_mbox = tb;
+			m_elevel = elev;
+//			if (PlayerInit.p_status == 1){
+//				var e:CommEvent = new CommEvent(CommEvent.GAMEOVER);
+//				dispatchEvent(e);
+//				this.gameOver();
+//			}else{
+//				
+//				if (elev == 4){
+//					m_level++;
+//					PlayerInit.p_custom++;
+//					resetBtn.visible = true;
+//				}
+//				//展开其他相关地图
+//				var th:int = tb.tlie;
+//				var tl:int = tb.thang;	
+//				//tb.visible = false;
+//				for (var i:int = 0;i<hang;i++){
+//					for (var j:int = 0;j<lie;j++){
+//						if (i-th<=view&&i-th>0||th-i<=view&&th-i>0){
+//							mapArr[i][tl].maskAlpha();
+//						}
+//						if (j-tl<=view&&j-tl>0||tl-j<=view&&tl-j>0){
+//							mapArr[th][j].maskAlpha();
+//						}
+//					}
+//				}
+//			}
+		}
+		public function fightOver(bol:Boolean):void{
+			//判断下一关
+//			if (""){
+//				m_level++;
+//				PlayerInit.p_custom++;
+//				resetBtn.visible = true;
+//			}
+//			
+			if(bol){
+				selBox.setStatus(4);
+				selBox.fight = false;
+			}
+			//展开其他相关地图
+			var th:int = m_mbox.tlie;
+			var tl:int = m_mbox.thang;	
+			//tb.visible = false;
+			for (var i:int = 0;i<hang;i++){
+				for (var j:int = 0;j<lie;j++){
+					if (i-th<=view&&i-th>0||th-i<=view&&th-i>0){
+						mapArr[i][tl].maskAlpha();
+					}
+					if (j-tl<=view&&j-tl>0||tl-j<=view&&tl-j>0){
+						mapArr[th][j].maskAlpha();
 					}
 				}
 			}
 		}
-		//探索
+		/**
+		 * 探索
+		 * */
 		private function explore(tb:MapBox,tp:int):void{
 			PlayerInit.tili -=tp;
 			var expl:Explore = new Explore();
 			expl.exp(tb);
 			alone.upui.Refresh();
-			tb.maskShow();
+			tb.fight = true;
+			tb.maskAlpha(0);
 		}
 		public function set level(e:int):void{
 			m_level = e;

@@ -14,19 +14,33 @@ package data
 		public function getmap(level:int):Array{
 			mapArr = new Array();
 			///{需修改}
-			m_hang = 3;
-			m_lie = 3;
-			//var point:Point = random(hang,lie);
-			
-			for (var i:int = 0;i<m_hang;i++){
+//			m_hang = 3;
+//			m_lie = 3;
+//			//var point:Point = random(hang,lie);
+//			
+//			for (var i:int = 0;i<m_hang;i++){
+//				mapArr.push(new Array());
+//				for (var j:int = 0;j<m_lie;j++){					
+//					//var mapObj:Object = {type:0,ground:0,level:0};
+//					//mapArr[i].push(mapObj);
+//				}
+//			}			
+			//setlevel(level);
+			//if (level == 0){
+			var mapobj:Object =  DataPool.getArr("mountain")[level];
+			m_hang = mapobj.hang;
+			m_lie = mapobj.lie;
+			var tar:Array = mapobj.mapdata.split(",");
+			for (var i:int = 0;i<int(m_hang);i++){
 				mapArr.push(new Array());
-				for (var j:int = 0;j<m_lie;j++){
-					
-					var mapObj:Object = {type:0,ground:0,level:0};
-					mapArr[i].push(mapObj);
+				for (var j:int = 0;j<int(m_lie);j++){
+					var tarr:Array = tar[i*int(m_lie)+j].split("&");
+					var mapObj1:Object = {ground:int(tarr[0]),level:int(tarr[1]),type:int(tarr[2])};
+					mapArr[i].push(mapObj1);
 				}
-			}			
+			}
 			setlevel(level);
+			//}
 			return mapArr;
 		}
 		private function random(hang:int,lie:int,lev:int):void{
@@ -60,6 +74,5 @@ package data
 				}
 			}			
 		}
-		
 	}
 }

@@ -14,6 +14,7 @@ package dialogs
 		private var skill:MyButton;
 		private var xiulian:MyButton;
 		private var custom:MyButton;
+		private var dazao:MyButton;
 		
 		public function BottomUI()
 		{
@@ -44,14 +45,19 @@ package dialogs
 				xiulian = new MyButton("修炼");
 			xiulian.x = skill.x+skill.width+5;
 			xiulian.addEventListener(MouseEvent.CLICK,xlHandler);
-			this.addChild(xiulian);
-			
+			this.addChild(xiulian);			
 			
 			if (!custom)
 				custom = new MyButton("关卡");
 			custom.x = xiulian.x+xiulian.width+5;
 			custom.addEventListener(MouseEvent.CLICK,ccHandler);
 			this.addChild(custom);
+			
+			if (!dazao)
+				dazao = new MyButton("打造");
+			dazao.x = custom.x+custom.width+5;
+			dazao.addEventListener(MouseEvent.CLICK,dzHandler);
+			this.addChild(dazao);
 			
 			
 			
@@ -77,6 +83,9 @@ package dialogs
 			alone.customdialog.theOpen();
 			alone.customdialog.Refresh();			
 		}
-		
+		private function dzHandler(e:MouseEvent):void{
+			alone.dazaodialog.theOpen();
+			alone.dazaodialog.Refresh();			
+		}
 	}
 }

@@ -13,6 +13,7 @@ package event
 		public static const CHANGEDATA:String = "changedata";
 		public var data:Array = new Array;
 		public var obj:Object = new Object;
+		public var bol:Boolean = true;;
 		public function CommEvent(type:String) 
 		{
 			super(type);

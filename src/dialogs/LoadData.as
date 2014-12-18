@@ -125,7 +125,7 @@ package dialogs
 		
 		private static function loaderRefreshComplete(e:Event):void{
 			var userdata:Object = new Object();
-			if(e.target.data!="load filed!"){
+			if(e.target.data!="load filed!"){trace (e.target.data);
 				userdata = JSON.parse(e.target.data);					
 			}	
 			DataPool.setData(dataStr, userdata);

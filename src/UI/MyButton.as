@@ -8,6 +8,7 @@ package UI
 	{
 		private var m_obj:Object;
 		private var m_mobj:Object;
+		private var m_str:String;
 		public var m_tf:MyText;
 		public function MyButton(label:String,color:uint = ColorInit.btnBgColor,width:int = 50,height:int = 50)
 		{
@@ -43,6 +44,12 @@ package UI
 		}
 		public function set mobj(ob:Object):void{
 			m_mobj = ob;
+		}
+		public function get mstr():String{
+			return m_str;
+		}
+		public function set mstr(ob:String):void{
+			m_str = ob;
 		}
 	}
 }

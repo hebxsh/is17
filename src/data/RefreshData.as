@@ -72,6 +72,8 @@ package data
 				LoadData.RefreshData("userskill");
 			}else if (r_tablestr=="skill"){
 				LoadData.RefreshData("user");
+			}else if (r_tablestr=="equip"){
+				LoadData.RefreshData("bag");
 			}
 		}
 		

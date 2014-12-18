@@ -201,10 +201,11 @@ package dialogs
 			this.timer.stop();
 			//DataPool.getArr("userskill")[xlIndex].xiulian = 0;
 			//DataPool.getSel("userskill",id).xiulian = m_tab.getIndex()+2;
-			if(gfSkill)
-			RefreshData.updateData("userskill","xiulian","0","id",gfSkill.id.toString());
-			RefreshData.updateData("userskill","xiulian",(m_tab.getIndex()+2)+"","id",id.toString());
-			refreshShow(m_tab.getIndex());
+			if(gfSkill){
+				RefreshData.updateData("userskill","xiulian","0","id",gfSkill.id.toString());
+				RefreshData.updateData("userskill","xiulian",(m_tab.getIndex()+2)+"","id",id.toString());
+			}
+			//refreshShow(m_tab.getIndex());
 		}
 		//点击修炼按钮
 		private function xlHandler(e:MouseEvent):void{

@@ -10,32 +10,50 @@ package data
 		public function DataInit()
 		{
 		}
-		//获取随机数
+		/**
+		 * 获取随机数
+		 */
 		public static function getRandom(num:int):int{
 			return int(Math.random()*num);
 		}
-		//获得随机等级
+		/**
+		 * 获得随机等级
+		 * */
 		public static function getRandomLevel(num:int,level:int):int{
 			return Math.random()*(num-level);			
 		}
-		//
+		/**
+		 * 
+		 * */
 		public static function getSrote(num:int,dm:int = d_m,dc:int = d_c,dx:Number = d_x):Number{
 			return dm/(dc+dx*num);			
 		}
-		//获得数据拷贝
+		/**
+		 * 获得数据拷贝
+		 * */
 		public static function getCopy(source:Object):Object{
 			var myBA:ByteArray = new ByteArray(); 
 			myBA.writeObject(source); 
 			myBA.position = 0; 
 			return(myBA.readObject()); 
 		}
-		//数组排序
+		/**
+		 * 数组排序
+		 * */
 		public static function paixu(arr:Array,str:String):void{
 			
 		}
-		//获取等级经验
+		/**
+		 * 获取等级经验
+		 * */
 		public static function levelExp(lev:int):int{
 			return (lev+1)*(lev+1)*(lev+1)*5+(lev+1)*(lev+1)*10+(lev+1)*10;
+		}
+		/**
+		 * 获取减伤系数
+		 * */
+		public static function damage(num:int):int{
+			return num/(0.01*num+1);
 		}
 	}
 }

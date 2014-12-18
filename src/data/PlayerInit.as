@@ -31,6 +31,7 @@ package data
 		public static var zhou:int = 0;
 
 		public static var p_status:int = 0;
+		/**关卡等级*/
 		public static var p_custom:int = 0;
 		
 		public static var p_skillArr:Array = new Array;
