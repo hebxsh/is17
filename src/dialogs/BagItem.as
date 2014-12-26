@@ -79,6 +79,7 @@ package dialogs
 				alone.bagdialog.closeHandler();
 			}else if(int(e.currentTarget.obj.id)<40000){
 				alone.dazaodialog.addCailiao(int(e.currentTarget.obj.id));
+				delet(int(e.currentTarget.mobj.mainid));
 				alone.bagdialog.closeHandler();
 			}else if(int(e.currentTarget.obj.id)<50000){
 				if(e.currentTarget.obj.type=="4"){

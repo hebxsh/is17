@@ -97,6 +97,18 @@ package dialogs
 					dropSki.addEventListener(MouseEvent.CLICK,remSkiHandler);
 					this.addChild(dropSki);
 				}
+			}else if(int(tdata.id)<40000){
+				tstr += "类型： 材料\n\n";
+				tstr += "属性： "+GameInit.getSxLeixing(tdata.type)+"\n\n";
+				for (var n:int = 0;n<PlayerInit.p_xsArr.length;n++){			
+					for(var property1:String in tdata){				
+						if (property1 == PlayerInit.p_xsArr[n][0]){
+							if(tdata[property1]!="0")tstr += PlayerInit.getName(property1)+"：  "+tdata[property1]+"\n";
+						}
+					}
+				} 
+				if (ts!==1){
+				}
 			}else if(int(tdata.id)<50000){
 				switch(tdata.type){
 					case "4":

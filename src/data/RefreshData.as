@@ -74,6 +74,8 @@ package data
 				LoadData.RefreshData("user");
 			}else if (r_tablestr=="equip"){
 				LoadData.RefreshData("bag");
+			}else if (r_tablestr=="bag"){
+				LoadData.RefreshData("bag");
 			}
 		}
 		

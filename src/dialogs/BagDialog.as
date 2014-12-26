@@ -101,7 +101,6 @@ package dialogs
 						if (m_es == "bag"){						
 							var bagitem:BagItem = new BagItem(tmStr,temid,i);
 							equPanel.addContent(bagitem,10);
-							
 						}else if(m_es == "equip"&&tmStr=="equip"){
 							var temEquObj:Object = DataPool.getSel("equip",temid);
 							if(temEquObj.type == typeid){
@@ -116,11 +115,17 @@ package dialogs
 							}
 						}else if(m_es == "material"&&tmStr=="material"){
 							var temMaterialObj:Object = DataPool.getSel("material",temid);
-							var typeArr:Array = m_type.split("&");
-							for(var m:int = 0;m<typeArr.length;m++){
-								if(temMaterialObj.type == typeArr[m]){//判断显示的书籍类型
-									var Materialitem:BagItem = new BagItem("material",temid,i);
-									equPanel.addContent(Materialitem,10);
+							
+							if (m_type=="all"){
+								var MaterialAllitem:BagItem = new BagItem("material",temid,i);
+								equPanel.addContent(MaterialAllitem,10);
+							}else{
+								var typeArr:Array = m_type.split("&");
+								for(var m:int = 0;m<typeArr.length;m++){
+									if(temMaterialObj.type == typeArr[m]){//判断显示材料类型
+										var Materialitem:BagItem = new BagItem("material",temid,i);
+										equPanel.addContent(Materialitem,10);
+									}
 								}
 							}
 						}

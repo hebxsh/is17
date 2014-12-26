@@ -4,6 +4,7 @@ package UI
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	
 	import data.ColorInit;
 
 	public class MyText extends Sprite
@@ -49,6 +50,9 @@ package UI
 		}
 		public function setText(txt:String):void{
 			text.htmlText = txt;
+		}
+		public function getText():String{
+			return text.text;
 		}
 		public function setAlgin(txt:String):void{
 			text.autoSize = txt;

@@ -7,8 +7,6 @@ package
 	import flash.events.Event;
 	import flash.utils.setTimeout;
 	
-	import UI.ToolTip;
-	
 	import data.GameInit;
 	import data.PlayerInit;
 	
@@ -65,10 +63,11 @@ package
 			//init();
 			//关闭窗口
 			win = stage.nativeWindow;
-			//win.addEventListener(Event.CLOSE,onClose);
+			win.addEventListener(Event.CLOSE,onClose);
 		}
 		private function onClose(e:Event):void{
-			playerdialog.saveData();
+			//playerdialog.saveData();
+			dazaodialog.closeHandler();
 		}
 		//登录
 		private function login():void{
