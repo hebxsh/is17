@@ -21,7 +21,7 @@ package UI
 		private var m_type:int = 0;
 		private var m_ground:int = 0;
 		private var m_lei:int = 0;
-		private var m_alpha:Number;
+		private var m_alpha:Number = 1;
 		private const tx:int = 2;
 		private const ty:int = 2;
 		private const tw:int = 84;
@@ -65,6 +65,7 @@ package UI
 		}
 		public function setStatus(typ:int):void{
 			typetxt.setText("<font color='"+typeArr[typ][1]+"'>"+typeArr[typ][0]+"</font>");
+			m_type = typ;
 		}
 		public function maskShow(show:Boolean = false):void{
 			maskHui.visible = show;
@@ -73,6 +74,9 @@ package UI
 		public function maskAlpha(alpha:Number = .6):void{
 			maskHui.alpha = alpha;
 			m_alpha = alpha;
+		}
+		public function get malpha():Number{
+			return m_alpha ;
 		}
 		public function get fight():Boolean{
 			return m_fight;
@@ -86,7 +90,16 @@ package UI
 		public function get ground():int{
 			return m_ground;
 		}
+		/**
+		 * 地图类型
+		 * */
 		public function get type():int{
+			return m_lei;
+		}
+		/**
+		 * 地图状态
+		 * */
+		public function get status():int{
 			return m_type;
 		}
 		public function get getalpha():Number{

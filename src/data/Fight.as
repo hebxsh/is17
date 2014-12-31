@@ -36,17 +36,20 @@ package data
 		//空地
 		private function kongdi(eType:int,eLevel:int):void{
 			tooltip.show("这里似乎没什么发现");
+			alone.maplayer.fightOver(true);
 		}
 		//安静
 		private function anjing(eType:int,eLevel:int):void{
 			tooltip.show("在这里收集到了一些材料");
 			Reward.getitem(eLevel);
+			alone.maplayer.fightOver(true);
 		}
 		//宝物
 		private function baowu(eType:int,eLevel:int):void{
 			tooltip.show("你仔细搜查了这里似乎有所发现");
 			//获取奖励
 			Reward.getitem(eLevel);
+			alone.maplayer.fightOver(true);
 		}
 		//陷阱
 		private function xianjing(eType:int,eLevel:int):void{
@@ -62,6 +65,7 @@ package data
 		private function zhenfa(eType:int,eLevel:int):void{
 			if (Math.random() < (100-DataInit.getSrote(PlayerInit.zhenfa))/100){
 				tooltip.show("落入了一个阵法，历尽千辛破阵而出");
+				alone.maplayer.fightOver(true);
 			}else if (Math.random()<.5){
 				guaiwu(eType,eLevel);
 			}else{

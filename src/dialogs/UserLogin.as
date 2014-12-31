@@ -1,5 +1,6 @@
 package dialogs
 {	
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -38,17 +39,24 @@ package dialogs
 			this.graphics.beginFill(ColorInit.dialogBgColor);
 			this.graphics.drawRect(0,0,GameInit.m_stage.stageWidth,GameInit.m_stage.stageHeight);
 			
+			var btt:Bitmap = DataPool.getImgData("logo");
+			btt.x = (480-btt.width)>>1;
+			btt.y = 120;
+			this.addChild(btt);
+			var btt1:Bitmap = DataPool.getImgData("logo_1");
+			btt1.x = 240;
+			btt1.y = 250;
+			this.addChild(btt1);
+			
 			var spr:Sprite = new Sprite;
 			spr.x = 80;
-			spr.y = 200;
+			spr.y = 300;
 			this.addChild(spr);
 			var utxt:MyText = new MyText("用户名：");
 			var ptxt:MyText = new MyText("密　码：");
 			ptxt.y = 60;
 			spr.addChild(utxt);
 			spr.addChild(ptxt);
-			
-
 			
 			var my_fmt:TextFormat = new TextFormat();//常用样式
 			my_fmt.size = 20;
@@ -80,12 +88,12 @@ package dialogs
 			
 			var login:MyButton = new MyButton("登 陆",0xccaa77,70);
 			login.x = 140;
-			login.y = 360;
+			login.y = 460;
 			login.addEventListener(MouseEvent.CLICK,loginHandler);
 			this.addChild(login);
 			var regist:MyButton = new MyButton("注 册",0xccaa77,70);
 			regist.x = 250;
-			regist.y = 360;
+			regist.y = 460;
 			regist.addEventListener(MouseEvent.CLICK,loginHandler);
 			this.addChild(regist);
 		}

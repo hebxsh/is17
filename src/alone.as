@@ -59,7 +59,7 @@ package
 			//getdata.init();
 			//setTimeout(init,1);
 			//延时第二帧刷新场景大小，pc调试用
-			setTimeout(login,1);	
+			setTimeout(initdata,1);	
 			//init();
 			//关闭窗口
 			win = stage.nativeWindow;
@@ -67,24 +67,32 @@ package
 		}
 		private function onClose(e:Event):void{
 			//playerdialog.saveData();
-			dazaodialog.closeHandler();
+			//dazaodialog.closeHandler();
+		}
+		//初始化资源
+		private function initdata():void{
+			GameInit.m_stage = stage;
+			loaddata = new LoadData();
+			loaddata.loadImageData();
+			loaddata.addEventListener(CommEvent.LOADCOMPLETE,login);
+			this.addChild(loaddata);
 		}
 		//登录
-		private function login():void{
-			GameInit.m_stage = stage;
+		private function login(e:CommEvent = null):void{	
+			loaddata.removeEventListener(CommEvent.LOADCOMPLETE,login);
 			if(!userlogin)
 				userlogin = new UserLogin();
 			userlogin.addEventListener(CommEvent.LOGIN,loaddataHandler);
 			this.addChild(userlogin);
 		}
 		//加载数据
-		private function loaddataHandler(e:CommEvent = null):void{			
-			loaddata = new LoadData();
-			loaddata.addEventListener(CommEvent.LOADCOMPLETE,init);
-			this.addChild(loaddata);
+		private function loaddataHandler(e:CommEvent = null):void{
+			loaddata.loadJsonData();
+			loaddata.addEventListener(CommEvent.LOADCOMPLETE,init);			
 		}
+		//初始化
 		private function init(e:CommEvent = null):void{	
-			
+			loaddata.removeEventListener(CommEvent.LOADCOMPLETE,init);	
 			//GameInit.m_stage = stage;
 			var bili:Number = stage.fullScreenWidth/480;
 			

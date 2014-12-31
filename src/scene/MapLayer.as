@@ -118,16 +118,13 @@ package scene
 			mapSpr.stopDrag();
 		}
 		//战斗
-		private var m_mbox:MapBox;
-		private var m_elevel:int;
 		private function fighting(tb:MapBox,etyp:int,elev:int):void{
 			var fight:Fight = new Fight();
 			fight.fighting(etyp,elev);
 			//PlayerInit.p_hp-=(elev+1);			
 			alone.upui.Refresh();
 			
-			m_mbox = tb;
-			m_elevel = elev;
+			
 //			if (PlayerInit.p_status == 1){
 //				var e:CommEvent = new CommEvent(CommEvent.GAMEOVER);
 //				dispatchEvent(e);
@@ -168,16 +165,20 @@ package scene
 				selBox.fight = false;
 			}
 			//展开其他相关地图
-			var th:int = m_mbox.tlie;
-			var tl:int = m_mbox.thang;	
+			var th:int = selBox.tlie;
+			var tl:int = selBox.thang;	
 			//tb.visible = false;
 			for (var i:int = 0;i<hang;i++){
 				for (var j:int = 0;j<lie;j++){
 					if (i-th<=view&&i-th>0||th-i<=view&&th-i>0){
-						mapArr[i][tl].maskAlpha();
+						if(mapArr[i][tl].malpha==1){
+							mapArr[i][tl].maskAlpha();
+						}
 					}
 					if (j-tl<=view&&j-tl>0||tl-j<=view&&tl-j>0){
-						mapArr[th][j].maskAlpha();
+						if(mapArr[th][j].malpha==1){
+							mapArr[th][j].maskAlpha();
+						}
 					}
 				}
 			}
